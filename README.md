@@ -85,7 +85,7 @@ mathgeon/
 1. **Install dependencies**
 
 ```bash
-npm install @types/node@22.15.17
+npm install @types/node
 ```
 
 2. **Start dev server**
