@@ -80,12 +80,12 @@ mathgeon/
 
 ---
 
-## ⚙️ Running the Project
+## Running the Project
 
 1. **Install dependencies**
 
 ```bash
-npm install
+npm install @types/node@22.15.17
 ```
 
 2. **Start dev server**
@@ -120,8 +120,10 @@ npm run dev
     }
   }
 }
+```
+
 ---
-## 📌 TODO
+## TODO
 
 - Implement core math gameplay loop
 - Add score multipliers
