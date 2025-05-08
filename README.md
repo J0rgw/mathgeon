@@ -1,4 +1,4 @@
-# 📘 Mathgeon
+# Mathgeon
 
 Mathgeon is a retro-styled, pixel-art inspired **web roguelite game** where your weapon is logic and math. You progress by solving equations inside dungeons, level up, and compete in global leaderboards.
 
@@ -6,7 +6,7 @@ Built with **React**, **TypeScript**, **Firebase Realtime Database**, and custom
 
 ---
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 mathgeon/
@@ -32,7 +32,7 @@ mathgeon/
 
 ---
 
-## 🚀 Tech Stack
+## Tech Stack
 
 - **React** + **React Router**
 - **TypeScript**
@@ -43,9 +43,9 @@ mathgeon/
 
 ---
 
-## 🔑 Core Features
+## Core Features
 
-### 📖 Book-style Navigation
+### Book-style Navigation
 
 - Horizontal scroll snap UI using `carousel`
 - Each "page" is part of a book layout:
@@ -54,14 +54,14 @@ mathgeon/
   3. Dungeon Selector
   4. Leaderboard
 
-### 🔐 Authentication
+### Authentication
 
 - Sign up with email, username & password
 - Login using **username** (email retrieved from DB)
 - Profile displays: username, email, hidden password
 - Change password & logout options
 
-### 🧠 Dungeons
+### Dungeons
 
 - Pulled from Firebase under `/dungeons`
 - Each dungeon has:
@@ -70,7 +70,7 @@ mathgeon/
   - Operation types
 - Will include math gameplay in future iteration
 
-### 🏆 Leaderboard
+### Leaderboard
 
 - Pulls scores from `/userProgress`
 - Displays **top 10 per dungeon**
@@ -98,7 +98,7 @@ npm run dev
 
 ---
 
-## 🗃️ Firebase Structure
+## Firebase Structure
 
 ```json
 {
