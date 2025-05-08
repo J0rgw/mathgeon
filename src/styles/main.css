@@ -1,0 +1,120 @@
+.home-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    gap: 2rem;
+  }
+  
+  .wave-text {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.5rem;
+    display: flex;
+    gap: 0.25rem;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .wave-text span {
+    animation: wave 2s ease-in-out infinite;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .link {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.85rem;
+    color: #4682b4; /* azul pixelado (steel blue) */
+    border: 2px solid #4682b4;
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  
+  .link:hover {
+    background-color: #4682b4;
+    color: #101010;
+  }
+  /* 📚 General para páginas del libro */
+.page > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+    padding: 2rem;
+    gap: 1.5rem;
+  }
+  
+  /* 🧠 Título animado */
+  .wave-text {
+    display: flex;
+    gap: 0.1em;
+    flex-wrap: nowrap; /* evita saltos de línea */
+    justify-content: center;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1.5rem;
+  }
+  
+  
+  .wave-text span {
+    animation: wave 2s ease-in-out infinite;
+  }
+  
+  @keyframes wave {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  /* 🟦 Botón principal */
+  .link,
+  button {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #4682b4;
+    color: #4682b4;
+    background: transparent;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-align: center;
+  }
+  
+  .link:hover,
+  button:hover {
+    background-color: #4682b4;
+    color: #101010;
+  }
+  
+  /* 🟦 Inputs */
+  input {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.7rem;
+    padding: 0.5rem;
+    width: 100%;
+    max-width: 300px;
+    border: 2px solid #4682b4;
+    background: #101010;
+    color: #fff;
+    outline: none;
+  }
+  
+  /* Selector de login/sign up */
+  .auth-toggle {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+  .small-text {
+    font-size: 0.8rem;
+  }
+  

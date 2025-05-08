@@ -1,46 +1,130 @@
-# Getting Started with Create React App
+# 📘 Mathgeon
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Mathgeon is a retro-styled, pixel-art inspired **web roguelite game** where your weapon is logic and math. You progress by solving equations inside dungeons, level up, and compete in global leaderboards.
 
-## Available Scripts
+Built with **React**, **TypeScript**, **Firebase Realtime Database**, and custom animated CSS for a nostalgic book-style scroll interface.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 🏗️ Project Structure
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```
+mathgeon/
+├── public/
+│   └── index.html
+├── src/
+│   ├── components/
+│   │   ├── McButton.tsx        # Custom pixel-art button component
+│   │   └── McInput.tsx         # Styled input component
+│   ├── pages/
+│   │   └── Home.tsx            # Main logic and UI container
+│   ├── services/
+│   │   └── firebase.ts         # Firebase config and auth
+│   ├── styles/
+│   │   ├── book.css            # Scroll book UI styles
+│   │   ├── main.css            # Global pixel font and base styles
+│   │   ├── animations.css      # Title animation and page transitions
+│   │   └── homeLayout.css      # Layouts, leaderboard, profile, form styling
+│   └── index.tsx
+├── package.json
+└── README.md
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+---
 
-### `npm test`
+## 🚀 Tech Stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **React** + **React Router**
+- **TypeScript**
+- **Firebase Auth & Realtime DB**
+- **Custom CSS Book-Style Scroll UI**
+- **Google Font: `Press Start 2P`**
+- **Pixel art-inspired UI + retro styling**
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🔑 Core Features
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 📖 Book-style Navigation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Horizontal scroll snap UI using `carousel`
+- Each "page" is part of a book layout:
+  1. Title + Game Description
+  2. Login/Register or Profile
+  3. Dungeon Selector
+  4. Leaderboard
 
-### `npm run eject`
+### 🔐 Authentication
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Sign up with email, username & password
+- Login using **username** (email retrieved from DB)
+- Profile displays: username, email, hidden password
+- Change password & logout options
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 🧠 Dungeons
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- Pulled from Firebase under `/dungeons`
+- Each dungeon has:
+  - Name
+  - Unique difficulty
+  - Operation types
+- Will include math gameplay in future iteration
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### 🏆 Leaderboard
 
-## Learn More
+- Pulls scores from `/userProgress`
+- Displays **top 10 per dungeon**
+- Names, scores, and rank aligned in retro style
+- Supports long usernames with safe wrapping
+- Scrollable selector for dungeon category
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## ⚙️ Running the Project
+
+1. **Install dependencies**
+
+```bash
+npm install
+```
+
+2. **Start dev server**
+
+```bash
+npm run dev
+```
+
+3. Make sure to configure your Firebase project in `firebase.ts`
+
+---
+
+## 🗃️ Firebase Structure
+
+```json
+{
+  "users": {
+    "UID123": {
+      "username": "BigBoss999",
+      "email": "big@boss.com"
+    }
+  },
+  "dungeons": {
+    "Cavern-of-Addition": { "name": "Cavern of Addition" }
+  },
+  "userProgress": {
+    "UID123": {
+      "Cavern-of-Addition": {
+        "score": 2200,
+        "highestLevel": 7
+      }
+    }
+  }
+}
+---
+## 📌 TODO
+
+- Implement core math gameplay loop
+- Add score multipliers
+- Store high scores in real time
+- Responsive mobile layout
+---

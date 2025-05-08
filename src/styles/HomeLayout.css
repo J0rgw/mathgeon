@@ -1,0 +1,137 @@
+/* Texto descriptivo */
+.desc-text {
+    font-size: 0.8rem;
+    line-height: 1.4;
+    font-family: 'Press Start 2P', monospace;
+  }
+  
+  /* Título estilo retro */
+  .press-font {
+    font-family: 'Press Start 2P', monospace;
+  }
+  
+  /* Contenedor izquierdo del leaderboard */
+  .leaderboard-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding-top: 1rem;
+  }
+  
+  .leaderboard-left h2 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  
+  /* Selector de mazmorras */
+  .selector-style {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.4rem;
+    text-align: center;
+    max-width: 100%;
+  }
+  
+  /* Lista del ranking */
+  .leaderboard-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    width: 90%;
+    max-width: 300px;
+    font-family: 'Press Start 2P', monospace;
+  }
+  
+  /* Cada entrada */
+  .leaderboard-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.4rem;
+    font-size: 0.65rem;
+    word-break: break-word;
+  }
+  
+  /* Nombre del jugador */
+  .leaderboard-name {
+    max-width: 70%;
+    font-family: 'Press Start 2P', monospace;
+    text-align: left;
+    font-size: inherit;
+    word-wrap: break-word;
+    word-break: break-word;
+  }
+  
+  /* Puntuación */
+  .leaderboard-score {
+    font-family: 'Press Start 2P', monospace;
+    font-size: inherit;
+    min-width: 50px;
+    text-align: right;
+  }
+  
+  /* Apoyo a diseño responsivo */
+  .fit-width {
+    width: 100%;
+    max-width: 100%;
+  }
+  .leaderboard-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  
+  .leaderboard-entry {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    white-space: nowrap;
+  }
+  
+  .rank {
+    min-width: 1.5rem;
+    text-align: right;
+  }
+  
+  .leaderboard-name {
+    min-width: 10ch;
+    max-width: 10ch;
+    overflow: hidden;
+    text-overflow: clip;
+    white-space: nowrap;
+  }
+  
+  .colon {
+    min-width: 0.5rem;
+    text-align: center;
+  }
+  
+  .leaderboard-score {
+    font-weight: bold;
+    min-width: 3ch;
+    text-align: right;
+  }
+    
+  .profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .profile-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.9rem;
+  }
+  
+  .profile-text {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.7rem;
+  }
+  
