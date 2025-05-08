@@ -1,42 +1,42 @@
 .mc-menu {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    width: 100%;
-  }
-  
-  .mc-button {
-    cursor: pointer;
-    background: linear-gradient(to bottom, #c6c6c6, #8b8b8b);
-    border: 2px solid #000;
-    box-shadow: inset -2px -2px 0 #3f3f3f, inset 2px 2px 0 #fff;
-    font-size: 0.75rem;
-    text-align: center;
-    padding: 0.5rem 1rem;
-    color: #000;
-    transition: transform 0.1s;
-    user-select: none;
-  }
-  
-  .mc-button:hover {
-    transform: translateY(1px);
-  }
-  
-  .mc-button.full {
-    width: 100%;
-    max-width: 300px;
-  }
-  
-  .mc-button .title {
-    pointer-events: none;
-  }
-  
-  .mc-input {
-    background: #000;
-    color: #fff;
-    padding: 0.5rem;
-    border: none;
-    outline: none;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.mc-button {
+  cursor: pointer;
+  background: linear-gradient(to bottom, #c6c6c6, #8b8b8b);
+  border: 2px solid #000;
+  box-shadow: inset -2px -2px 0 #3f3f3f, inset 2px 2px 0 #fff;
+  font-size: 0.75rem;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  color: #000;
+  transition: transform 0.1s;
+  user-select: none;
+}
+
+.mc-button:hover {
+  transform: translateY(1px);
+}
+
+.mc-button.full {
+  width: 100%;
+  max-width: 300px;
+}
+
+.mc-button .title {
+  pointer-events: none;
+}
+
+.mc-input {
+  cursor: text;
+  background: #000;
+  color: #fff;
+  padding: 0.5rem;
+  border: none;
+  outline: none;
+}

@@ -214,13 +214,13 @@ export default function MainPage() {
                                 {user ? (
                                     <>
                                         {/* PERFIL */}
-<div className="page left-page" data-page="3">
-  <div className="profile-info">
-    <h3 className="profile-title">Welcome, {username || "..."}</h3>
-    <p className="profile-text">Email: {user.email}</p>
-    <p className="profile-text">Password: ********</p>
-  </div>
-</div>
+                                        <div className="page left-page" data-page="3">
+                                            <div className="profile-info">
+                                                <h3 className="profile-title">Welcome, {username || "..."}</h3>
+                                                <p className="profile-text">Email: {user.email}</p>
+                                                <p className="profile-text">Password: ********</p>
+                                            </div>
+                                        </div>
 
                                         <div className="page right-page" data-page="4">
                                             <form
