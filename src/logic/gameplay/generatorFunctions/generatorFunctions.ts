@@ -9,7 +9,7 @@
  */
 
 import { Equation } from "../equation";
-import { compile, GrandEx } from "../../../grand/grand";
+import { compile, GrandEx } from "../../../grand-debug/grand";
 import { UNCOMPILED_GRAND_EXPRESSIONS } from "../grandExpressions/grandExpressions";
 
 interface GrandExMap {
@@ -26,6 +26,8 @@ let available = false;
 // Compiles all Grand Expressions, should only be called once
 export function allocGrandExpressions() {
     gMap = Object.fromEntries(UNCOMPILED_GRAND_EXPRESSIONS.map(grandex => [grandex, compile(grandex)]));
+    // HACK: Save on memory like greedy bastards that hate performance
+    // gMap = {};
     available = true;
     // console.log(gMap);
 }
@@ -40,12 +42,22 @@ export function freeGrandExpressions() {
 
 /**
  * Generates a number using a Grand Expression.   
- * The expression must be pre-compiled. If it was not
- * compiled previously, the function throws an exception
+ * The expression should be pre-compiled.
+ * If it isn't, the expression will be compiled,
+ * ran and then freed from memory, which is
+ * inefficient but idk what to do anymore
  */
 function generate(grandExpression: string) {
     if (!available) throw "Can't generate math problems with uninitialized or freed Random Number Generators";
-    return gMap[grandExpression].generate();
+    if (gMap[grandExpression]) {
+        return gMap[grandExpression].generate();
+    } else {
+        console.warn("Using inefficient Grand Expression mode, this should save memory but is slooooowwww");
+        const grandEx = compile(grandExpression);
+        const result = grandEx.generate();
+        grandEx.free();
+        return result;
+    }
 }
 
 /**

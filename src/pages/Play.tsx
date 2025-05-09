@@ -46,8 +46,8 @@ function Play(props: MgPlayProps) {
         // console.log("loaded resize fix listener");
         
         initGenerators()
-            .then(()=>{
-                setEquation(generateEasy());
+            .then(async ()=>{
+                setEquation(await generateEasy());
             })
         ;
 
@@ -57,21 +57,11 @@ function Play(props: MgPlayProps) {
         }
     }, []);
 
-    function validateRes() {
+    async function validateRes() {
         const res = solve(equation.getRaw());
         if (res == userInput) {
             setUserInput("");
-            let equation: Equation | undefined;
-            console.log("Let's go gambling!");
-            for (let i = 0; i < 1000; i++) {
-                try {
-                    equation = generateEasy();
-                    break;
-                } catch (error) {
-                    console.log("Oh dang it!");
-                }
-            }
-            setEquation(equation ?? new Equation(""));
+            setEquation(await generateEasy());
             alert("Yaaay!");
         } else {
             alert("You stupid")

@@ -8,7 +8,9 @@
  * Generators return an Equation
  */
 
-import initSync, { compile, GrandEx } from "../../grand/grand";
+import __wbg_init, { _hack_unload } from "../../grand-debug/grand";
+import initSync, { compile, GrandEx } from "../../grand-debug/grand";
+import { MgDifficulty } from "../../types/MgDifficulty";
 import { Equation } from "./equation";
 import { allocGrandExpressions, EASY_GENERATORS_SORTED, freeGrandExpressions } from "./generatorFunctions/generatorFunctions";
 
@@ -20,15 +22,67 @@ export async function initGenerators() {
     easyGenGrandex = compile(`0..${EASY_GENERATORS_SORTED.length-1}|*1`);
 }
 export function freeGenerators() {
-    freeGrandExpressions();
-    easyGenGrandex.free()
+    try {
+        freeGrandExpressions();
+        easyGenGrandex.free()
+    } catch (error) {
+        console.warn("Mathgeon is falling apart at the seams");
+        console.error(error);
+    }
 }
 
 // Get Random Indices
-function easy() {
+function randomIndexEasy() {
     return easyGenGrandex.generate();
 }
 
-export function generateEasy(): Equation {
-    return EASY_GENERATORS_SORTED[easy()]();
+async function generateEquation(difficulty: MgDifficulty): Promise<Equation> {
+    let equation: Equation | undefined;
+    console.log("Let's go gambling!");
+    try {
+        const generatorFunction = (difficulty == MgDifficulty.EASY) ?
+            // Easy Equations
+            EASY_GENERATORS_SORTED[randomIndexEasy()]
+        : (difficulty == MgDifficulty.MID ?
+            // Intermediate equations
+            // TODO: Add intermediate equations
+            EASY_GENERATORS_SORTED[randomIndexEasy()]
+        :
+            // Hard equations
+            // TODO: Add hard equations
+            EASY_GENERATORS_SORTED[randomIndexEasy()]
+        )
+        equation = generatorFunction();
+    } catch (_) {
+        // Unload and reload WASM completely
+        // freeGenerators();
+        _hack_unload();
+        try {
+            console.warn("Reloaded (or tried to reload) WASM! Fuckery is to be expected!!!");
+            await initGenerators();
+            
+            const generatorFunction = (difficulty == MgDifficulty.EASY) ?
+                // Easy Equations
+                EASY_GENERATORS_SORTED[randomIndexEasy()]
+            : (difficulty == MgDifficulty.MID ?
+                // Intermediate equations
+                // TODO: Add intermediate equations
+                EASY_GENERATORS_SORTED[randomIndexEasy()]
+            :
+                // Hard equations
+                // TODO: Add hard equations
+                EASY_GENERATORS_SORTED[randomIndexEasy()]
+            )
+
+            equation = generatorFunction();
+        } catch (error) {
+            console.error("Mathgeon has collapsed!");
+            console.error(error);
+        }
+    }
+    return equation ?? new Equation("");
+}
+
+export async function generateEasy(): Promise<Equation> {
+    return generateEquation(MgDifficulty.EASY);
 }
