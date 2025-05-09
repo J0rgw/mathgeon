@@ -15,7 +15,12 @@ import "../styles/book.css";
 import "../styles/animations.css";
 import "../styles/main.css";
 import "../styles/homeLayout.css";
+import { Link } from "react-router-dom";
 
+// Constants
+const REGEX_EMAIL = /^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/;
+
+// Interfaces
 interface Dungeon {
     name: string;
 }
@@ -141,7 +146,7 @@ export default function MainPage() {
                 await signInWithEmailAndPassword(auth, emailFound, password);
                 alert("Logged in!");
             } else {
-                if (!email.includes("@") || !email.includes(".")) {
+                if (!REGEX_EMAIL.test(email)) {
                     alert("Invalid email format");
                     return;
                 }
@@ -175,10 +180,11 @@ export default function MainPage() {
     };
 
     const handleEnterDungeon = (id: string) => {
-        alert(`Entering dungeon: ${dungeons[id].name}`);
+        console.log(`Entering dungeon: ${dungeons[id].name}`);
     };
 
     return (
+        <div className="fakeroot"> {/* Fake Root allows us to not f*ck up every other page */}
         <div className="container">
             <div className="sprite-wrapper">
                 <div className="book">
@@ -186,7 +192,7 @@ export default function MainPage() {
                         <div className="sprite" />
 
                         {/* PAGE 1: Home */}
-                        <div className="carousel-item active">
+                        <div className={`carousel-item ${currentPage === 0 ? "active" : ""}`}>
                             <div className="page-container">
                                 <div className="page left-page" data-page="1">
                                     <div className="home-content">
@@ -299,10 +305,11 @@ export default function MainPage() {
                                     <div>
                                         <h2 className="profile-title">Dungeon Selector</h2>
                                         {Object.entries(dungeons).map(([id, dungeon]) => (
-                                            <div key={id} style={{ marginBottom: "0.5rem" }}>
+                                            <div key={id} style={{ marginBottom: "0.5rem", width: "100%" }}>
                                                 <strong className="profile-text">{dungeon.name}</strong>
-                                                <br />
-                                                <McButton onClick={() => handleEnterDungeon(id)}>Enter</McButton>
+                                                <Link to={`/play/${id}`}>
+                                                    <McButton onClick={() => handleEnterDungeon(id)}>Enter</McButton>
+                                                </Link>
                                             </div>
                                         ))}
                                     </div>
@@ -357,5 +364,6 @@ export default function MainPage() {
                 </div>
             </div>
         </div>
+        </div> // Fake Root
     );
 }

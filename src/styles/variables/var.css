@@ -1,0 +1,17 @@
+:root {
+    --mg-background: #222;
+    --mg-text: #eec;
+
+    /* Gameplay */
+    --mg-background-easy: url('/backgrounds/gameplay1.png');
+    --mg-background-moderate: url('/backgrounds/gameplay2.png');
+    --mg-background-hard: url('/backgrounds/gameplay3.png');
+    /* Dynamic Gameplay Elements */
+    --mg-equation-x-pos: 1180px;
+    --mg-equation-y-pos: 315px;
+    --mg-equation-font-size: 5rem;
+    --mg-equation-x-size: 5rem;
+    --mg-equation-y-size: 5rem;
+    --mg-equation-x-padding: 1rem;
+    --mg-equation-y-padding: 1rem;
+}

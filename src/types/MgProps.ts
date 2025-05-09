@@ -1,0 +1,21 @@
+import { ReactNode } from "react"
+import { MgDifficulty } from "./MgDifficulty"
+
+export type MgChildrenProps = {
+    children: ReactNode
+}
+
+export type MgPlayProps = {
+    difficulty?: MgDifficulty
+}
+
+export type MgPanelProps = {
+    children: ReactNode,
+    large?: boolean,
+    smaller?: boolean
+}
+
+export type MgMenuElementProps = {
+    children: ReactNode,
+    to: string,
+}
