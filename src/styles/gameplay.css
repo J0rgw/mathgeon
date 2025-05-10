@@ -16,7 +16,7 @@
     background-image: var(--mg-background-hard);
 }
 
-.mg-gameplay-equation {
+.mg-gameplay-equation-door {
     position: absolute;
     pointer-events: none;
     
@@ -29,7 +29,7 @@
 
     perspective: 300px;
 }
-.mg-gameplay-equation > p {
+.mg-gameplay-equation-door > p {
     /* should be dynamic */
     font-size: var(--mg-equation-font-size);
 
@@ -44,4 +44,36 @@
 
     transform-style: preserve-3d;
     transform: rotateY(-5deg) rotateZ(1.5deg);
+}
+
+.mg-gameplay-equation {
+    font-family: 'PixelText', serif;
+    font-optical-sizing: auto;
+    line-height: 1.5;
+    font-weight: 400;
+}
+.mg-gameplay-input {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 8px;
+    
+    font-family: 'Press Start 2P', monospace;
+    font-optical-sizing: auto;
+    line-height: 1.5;
+    font-weight: 400;
+
+    margin-bottom: 16px;
+
+    >p {
+        margin: 0;
+        font-size: 16px;
+    }
+
+    >input {
+        background: transparent;
+        border: none;
+        border-bottom: 2px solid white;
+        font-size: 16px
+    }
 }

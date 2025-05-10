@@ -6,6 +6,7 @@ import { Equation } from "../logic/gameplay/equation";
 import { solve } from "../logic/gameplay/solver";
 import { MgPlayProps } from "../types/MgProps";
 import { MgDifficulty } from "../types/MgDifficulty";
+import McButton from "../components/McButton";
 
 // CONSTANTS                     _
 const IMG_RATIO = 16.0/9.0;  // 1.7  <-- infinite 7s lol
@@ -26,15 +27,19 @@ function Play(props: MgPlayProps) {
 
     const difficulty = props.difficulty ?? MgDifficulty.MID;
     let difficultyClass: string;
+    let levelName: string;
     switch (difficulty) {
         case MgDifficulty.EASY:
             difficultyClass = "mg-gameplay-easy";
+            levelName = "Cavern of Addition";
             break;
         case MgDifficulty.MID:
             difficultyClass = "mg-gameplay-moderate";
+            levelName = "Crypt of Multiplication";
             break;
         case MgDifficulty.HARD:
             difficultyClass = "mg-gameplay-hard";
+            levelName = "Temple of Algebra";
             break;
     }
     
@@ -71,28 +76,28 @@ function Play(props: MgPlayProps) {
     return (
         <div className={`mg-gameplay ${difficultyClass}`} ref={background}>
             {/* Equation in Background */}
-            <div className="mg-gameplay-equation">
+            <div className="mg-gameplay-equation-door">
                 <p>{equation.getLatex()}</p>
             </div>
             {/* Gameplay */}
-            <h1>GRand + mathsteps Tests</h1>
-            <div className="flex flex-col md:flex-row">
-                <div className="basis-1/2">
-                    <form action={validateRes} className="bg-amber-950 m-10 p-4 rounded-xl border-yellow-700 border shadow-xl shadow-black/50">
-                        <h2>Cavern Of Addition</h2>
+            <h1>{levelName}</h1>
+            <div className="">
+                <div className="">
+                    <form action={validateRes} className="">
                         {/* Equation in gameplay card */}
-                        <p className="font-serif bg-orange-300 text-amber-950 p-2 text-xl text-center rounded-md my-4">
+                        {/* TODO: Implement LaTex rendering. Change styles once LaTex is implemented */}
+                        <p className="mg-gameplay-equation">
                             {equation.getLatex()}
                         </p>
                         {/* Input */}
-                        <div className="flex items-center">
-                            <p className="basis-10 font-serif text-xl">x = </p>
-                            <input type="text" placeholder="..." value={userInput} onChange={(e)=>{setUserInput(e.target.value)}} className="bg-amber-900 p-2 rounded-md w-full" />
+                        <div className="mg-gameplay-input">
+                            <p>x = </p>
+                            <input type="text" placeholder="..." value={userInput} onChange={(e)=>{setUserInput(e.target.value)}} />
                         </div>
                         {/* Submit */}
-                        <button type="button" className="my-6 p-4 block w-full bg-yellow-600 text-orange-950 rounded-md cursor-pointer hover:bg-yellow-500 transition">
+                        <McButton type="submit">
                             Submit!
-                        </button>
+                        </McButton>
                     </form>
                 </div>
             </div>
