@@ -1,4 +1,7 @@
 let wasm;
+export function _hack_unload() {
+    wasm = undefined;
+}
 
 let cachedUint8ArrayMemory0 = null;
 

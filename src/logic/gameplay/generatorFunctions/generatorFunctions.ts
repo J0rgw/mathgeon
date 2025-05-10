@@ -9,7 +9,7 @@
  */
 
 import { Equation } from "../equation";
-import { compile, GrandEx } from "../../../grand-debug/grand";
+import { compile, GrandEx } from "../../../grand/grand";
 import { UNCOMPILED_GRAND_EXPRESSIONS } from "../grandExpressions/grandExpressions";
 
 interface GrandExMap {

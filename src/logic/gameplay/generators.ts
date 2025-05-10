@@ -8,8 +8,8 @@
  * Generators return an Equation
  */
 
-import __wbg_init, { _hack_unload } from "../../grand-debug/grand";
-import initSync, { compile, GrandEx } from "../../grand-debug/grand";
+import __wbg_init, { _hack_unload } from "../../grand/grand";
+import initSync, { compile, GrandEx } from "../../grand/grand";
 import { MgDifficulty } from "../../types/MgDifficulty";
 import { Equation } from "./equation";
 import { allocGrandExpressions, EASY_GENERATORS_SORTED, freeGrandExpressions } from "./generatorFunctions/generatorFunctions";
@@ -58,7 +58,7 @@ async function generateEquation(difficulty: MgDifficulty): Promise<Equation> {
         // freeGenerators();
         _hack_unload();
         try {
-            console.warn("Reloaded (or tried to reload) WASM! Fuckery is to be expected!!!");
+            console.warn("WASM Reloaded! (recovered from equation generation error)");
             await initGenerators();
             
             const generatorFunction = (difficulty == MgDifficulty.EASY) ?
