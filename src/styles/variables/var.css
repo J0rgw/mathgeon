@@ -3,9 +3,9 @@
     --mg-text: #eec;
 
     /* Gameplay */
-    --mg-background-easy: url('/backgrounds/gameplay1.png');
-    --mg-background-moderate: url('/backgrounds/gameplay2.png');
-    --mg-background-hard: url('/backgrounds/gameplay3.png');
+    --mg-background-easy: url('/assets/backgrounds/gameplay1.png');
+    --mg-background-moderate: url('/assets/backgrounds/gameplay2.png');
+    --mg-background-hard: url('/assets/backgrounds/gameplay3.png');
     /* Dynamic Gameplay Elements */
     --mg-equation-x-pos: 1180px;
     --mg-equation-y-pos: 315px;

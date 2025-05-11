@@ -7,7 +7,7 @@
   }
   
   .wave-text span {
-    font-family: "PixelText", monospace;
+    font-family: "Grand9KPixel", monospace;
     font-size: 2rem;
     display: inline-block;
     animation: wave 2s ease-in-out infinite;

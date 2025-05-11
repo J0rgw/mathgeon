@@ -55,12 +55,18 @@
   
   /* Nombre del jugador */
   .leaderboard-name {
-    max-width: 70%;
     font-family: 'Press Start 2P', monospace;
     text-align: left;
     font-size: inherit;
     word-wrap: break-word;
     word-break: break-word;
+
+    min-width: 7ch;
+    max-width: 7ch;
+    width: 7ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   
   /* Puntuación */
@@ -97,15 +103,8 @@
   
   .rank {
     min-width: 1.5rem;
+    max-width: 1.5rem;
     text-align: right;
-  }
-  
-  .leaderboard-name {
-    min-width: 10ch;
-    max-width: 10ch;
-    overflow: hidden;
-    text-overflow: clip;
-    white-space: nowrap;
   }
   
   .colon {
