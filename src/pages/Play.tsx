@@ -7,14 +7,18 @@ import { solve } from "../logic/gameplay/solver";
 import { MgPlayProps } from "../types/MgProps";
 import { MgDifficulty } from "../types/MgDifficulty";
 import McButton from "../components/McButton";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { auth } from "../services/firebase";
+import { getDatabase, onValue, ref } from "firebase/database";
+import { useNavigate } from "react-router-dom";
 
-// CONSTANTS                     _
+// CONSTANTS                      _
 const IMG_RATIO = 16.0/9.0;  // 1.7  <-- infinite 7s lol
-const IMG_POS_X = 0.575;      // X Position of the golden plate, values from 0 to 1 beginning from left
-const IMG_POS_Y = 0.275;      // Y Position of the golden plate, values from 0 to 1 beginning from top
+const IMG_POS_X = 0.575;      // X Position of the plate on the door, values from 0 to 1 beginning from left
+const IMG_POS_Y = 0.275;      // Y Position of the plate on the door, values from 0 to 1 beginning from top
 const TARGET_X_SIZE = 1280;
 const TARGET_Y_SIZE = 720;
-const BASE_FONT_SIZE = 50;        // text size in PX for the ideal div size (1280x720)
+const BASE_FONT_SIZE = 50;        // text size in PX for the ideal background size (1280x720)
 const BASE_X_SIZE = 352;
 const BASE_Y_SIZE = 85;
 const BASE_X_PADDING = 10;
@@ -22,6 +26,9 @@ const BASE_Y_PADDING = 10;
 
 function Play(props: MgPlayProps) {
     const background: RefObject<null | HTMLDivElement> = useRef(null);
+    const navigate = useNavigate();
+    const [user, setUser] = useState<User | null>(null);
+    const [username, setUsername] = useState("");
     const [equation, setEquation] = useState(new Equation(""))
     const [userInput, setUserInput] = useState("")
 
@@ -42,6 +49,26 @@ function Play(props: MgPlayProps) {
             levelName = "Temple of Algebra";
             break;
     }
+
+    // Auth
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+            if (firebaseUser) {
+                setUser(firebaseUser);
+                const db = getDatabase();
+                const usernameRef = ref(db, `users/${firebaseUser.uid}/username`);
+                onValue(usernameRef, (snapshot) => {
+                    const name = snapshot.val();
+                    if (name) setUsername(name);
+                });
+                console.log("logged in");
+            } else {
+                console.log("oopsy");
+                navigate("/");
+            }
+        });
+        return () => unsubscribe();
+    }, []);
     
 
     useEffect(()=>{
@@ -158,3 +185,11 @@ function calculateEquationTransform(backgroundRef: RefObject<null | HTMLDivEleme
 }
 
 export default Play
+
+function setUser(firebaseUser: User | null) {
+    throw new Error("Function not implemented.");
+}
+function setUsername(name: any) {
+    throw new Error("Function not implemented.");
+}
+

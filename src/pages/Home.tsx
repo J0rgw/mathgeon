@@ -208,7 +208,7 @@ export default function MainPage() {
                                 </div>
                                 <div className="page right-page" data-page="2">
                                     <p className="desc-text">
-                                        Mathgeon is a roguelite dungeon where your sword is your mind.
+                                        A roguelite dungeon where your sword is your mind.
                                     </p>
                                 </div>
                             </div>
@@ -299,7 +299,7 @@ export default function MainPage() {
                         </div>
 
                         {/* PAGE 3: Dungeon Selector */}
-                        <div className={`carousel-item ${currentPage === 2 ? "active" : ""}`}>
+                        <div className={`carousel-item ${currentPage === 2 && user ? "active" : ""}`}>
                             <div className="page-container">
                                 <div className="page left-page" >
                                     <div>
@@ -318,7 +318,11 @@ export default function MainPage() {
                                 <div className="page right-page" >
                                     <div>
                                         <p style={{ fontSize: "0.85rem" }} className="profile-text">
-                                            Select a dungeon to begin your challenge.<br />More coming soon!
+                                            {user ?
+                                                <>Select a dungeon to begin your challenge.<br />More coming soon!</>
+                                            :
+                                                <>Log in to select a dungeon.</>
+                                            }
                                         </p>
                                     </div>
                                 </div>
