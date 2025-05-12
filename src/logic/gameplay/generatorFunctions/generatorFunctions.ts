@@ -54,7 +54,7 @@ function generate(grandExpression: string, allowUnoptimized?: boolean) {
     if (gMap[grandExpression]) {
         return gMap[grandExpression].generate();
     } else {
-        if (!allowUnoptimized) console.warn("Using inefficient Grand Expression mode, this should save memory but is slooooowwww");
+        if (!allowUnoptimized) console.warn(grandExpression, "Using inefficient Grand Expression mode, this should save memory but is slooooowwww");
         const grandEx = compile(grandExpression);
         const result = grandEx.generate();
         grandEx.free();
@@ -79,7 +79,9 @@ export const EASY_GENERATORS_SORTED = [
  */
 export const MID_GENERATORS_SORTED = [
     mid_simpleMultiplication,
-    mid_simpleDivision
+    mid_simpleDivision,
+    mid_pemdas1,
+    mid_pemdas2
 ];
 
 
@@ -110,8 +112,26 @@ function mid_simpleMultiplication(): Equation {
     const a = generate("1..10|*1");
     const b = generate("1..10|*1");
     return new Equation(`x = ${a} * ${b}`);
-}function mid_simpleDivision(): Equation {
+}
+function mid_simpleDivision(): Equation {
     const b = generate("1..10|*1");
-    const a = generate(`1..100|*${b}`);
+    const a = generate(`1..100|*${b}`, true);
     return new Equation(`x = ${a} / ${b}`);
+}
+function mid_pemdas1(): Equation {
+    const b = generate("1..10|*1");
+    const c = generate("1..10|*1");
+    const sign_a = (c>b) ? '+' : generate("[0,1]") ? '+' : '-';
+    
+    const constraint = sign_a == '+' ? (b+c) : (b-c);
+    const a = generate(`${constraint},.100|*${constraint}`, true);
+    return new Equation(`x = ${a} / (${b} ${sign_a} ${c})`);
+}
+function mid_pemdas2(): Equation {
+    const b = generate("1..10|*1");
+    const c = generate("-10..10|*1");
+    const sign_a = generate("[0,1]") ? '+' : '-';
+    
+    const a = generate(`-100..100|*1`);
+    return new Equation(`x = ${a} * (${b} ${sign_a} ${c})`);
 }
