@@ -12,19 +12,22 @@ import __wbg_init, { _hack_unload } from "../../grand/grand";
 import initSync, { compile, GrandEx } from "../../grand/grand";
 import { MgDifficulty } from "../../types/MgDifficulty";
 import { Equation } from "./equation";
-import { allocGrandExpressions, EASY_GENERATORS_SORTED, freeGrandExpressions } from "./generatorFunctions/generatorFunctions";
+import { allocGrandExpressions, EASY_GENERATORS_SORTED, freeGrandExpressions, MID_GENERATORS_SORTED } from "./generatorFunctions/generatorFunctions";
 
 let easyGenGrandex: GrandEx;
+let midGenGrandex: GrandEx;
 
 export async function initGenerators() {
     await initSync();
     allocGrandExpressions();
     easyGenGrandex = compile(`0..${EASY_GENERATORS_SORTED.length-1}|*1`);
+    midGenGrandex = compile(`0..${MID_GENERATORS_SORTED.length-1}|*1`);
 }
 export function freeGenerators() {
     try {
         freeGrandExpressions();
-        easyGenGrandex.free()
+        easyGenGrandex.free();
+        midGenGrandex.free();
     } catch (error) {
         console.warn("Mathgeon is falling apart at the seams");
         console.error(error);
@@ -35,8 +38,11 @@ export function freeGenerators() {
 function randomIndexEasy() {
     return easyGenGrandex.generate();
 }
+function randomIndexMid() {
+    return midGenGrandex.generate();
+}
 
-async function generateEquation(difficulty: MgDifficulty): Promise<Equation> {
+export async function generateEquation(difficulty: MgDifficulty): Promise<Equation> {
     let equation: Equation | undefined;
     console.log("Let's go gambling!");
     try {
@@ -45,8 +51,7 @@ async function generateEquation(difficulty: MgDifficulty): Promise<Equation> {
             EASY_GENERATORS_SORTED[randomIndexEasy()]
         : (difficulty == MgDifficulty.MID ?
             // Intermediate equations
-            // TODO: Add intermediate equations
-            EASY_GENERATORS_SORTED[randomIndexEasy()]
+            MID_GENERATORS_SORTED[randomIndexMid()]
         :
             // Hard equations
             // TODO: Add hard equations
@@ -66,8 +71,7 @@ async function generateEquation(difficulty: MgDifficulty): Promise<Equation> {
                 EASY_GENERATORS_SORTED[randomIndexEasy()]
             : (difficulty == MgDifficulty.MID ?
                 // Intermediate equations
-                // TODO: Add intermediate equations
-                EASY_GENERATORS_SORTED[randomIndexEasy()]
+                MID_GENERATORS_SORTED[randomIndexMid()]
             :
                 // Hard equations
                 // TODO: Add hard equations
@@ -81,8 +85,4 @@ async function generateEquation(difficulty: MgDifficulty): Promise<Equation> {
         }
     }
     return equation ?? new Equation("");
-}
-
-export async function generateEasy(): Promise<Equation> {
-    return generateEquation(MgDifficulty.EASY);
 }

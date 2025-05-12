@@ -1,7 +1,7 @@
 import { RefObject, useEffect, useRef, useState } from "react";
 import "../styles/gameplay.css"
 
-import { generateEasy, initGenerators } from "../logic/gameplay/generators";
+import { generateEquation, initGenerators } from "../logic/gameplay/generators";
 import { Equation } from "../logic/gameplay/equation";
 import { solve } from "../logic/gameplay/solver";
 import { MgPlayProps } from "../types/MgProps";
@@ -79,7 +79,7 @@ function Play(props: MgPlayProps) {
         
         initGenerators()
             .then(async ()=>{
-                setEquation(await generateEasy());
+                setEquation(await generateEquation(difficulty));
             })
         ;
 
@@ -93,7 +93,7 @@ function Play(props: MgPlayProps) {
         const res = solve(equation.getRaw());
         if (res == userInput) {
             setUserInput("");
-            setEquation(await generateEasy());
+            setEquation(await generateEquation(difficulty));
             alert("Yaaay!");
         } else {
             alert("You stupid")
