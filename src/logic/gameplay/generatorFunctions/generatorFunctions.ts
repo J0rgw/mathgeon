@@ -129,7 +129,7 @@ function mid_pemdas1(): Equation {
 }
 function mid_pemdas2(): Equation {
     const b = generate("1..10|*1");
-    const c = generate("-10..10|*1");
+    const c = generate("1..10|*1");
     const sign_a = generate("[0,1]") ? '+' : '-';
     
     const a = generate(`-100..100|*1`);
