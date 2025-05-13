@@ -6,6 +6,7 @@ import {
     signOut,
     updatePassword,
     User,
+    deleteUser,
 } from "firebase/auth";
 import { getDatabase, ref, set, onValue, get } from "firebase/database";
 import { auth } from "../services/firebase";
@@ -16,6 +17,7 @@ import "../styles/animations.css";
 import "../styles/main.css";
 import "../styles/homeLayout.css";
 import { Link } from "react-router-dom";
+import { FirebaseError } from "firebase/app";
 
 // Constants
 const REGEX_EMAIL = /^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/;
@@ -33,6 +35,7 @@ interface LeaderboardEntry {
 export default function MainPage() {
     const [user, setUser] = useState<User | null>(null);
     const [currentPage, setCurrentPage] = useState(0);
+    const [loginErrorMsg, setLoginErrorMsg] = useState("");
     const [isLogin, setIsLogin] = useState(true);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -140,42 +143,59 @@ export default function MainPage() {
                     }
                 }
                 if (!emailFound) {
-                    alert("Username not found");
+                    // console.log("Username not found");
+                    // When the security is sus
+                    setLoginErrorMsg("Invalid username or password");
                     return;
                 }
                 await signInWithEmailAndPassword(auth, emailFound, password);
-                alert("Logged in!");
+                setLoginErrorMsg("");
+                // alert("Logged in!");
             } else {
                 if (!REGEX_EMAIL.test(email)) {
-                    alert("Invalid email format");
+                    setLoginErrorMsg("Invalid email format");
                     return;
                 }
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const uid = userCredential.user.uid;
                 await set(ref(db, `users/${uid}`), { username, email });
-                alert("Account created!");
+                alert("Account created!\nTODO: Autologin");
             }
-        } catch (error: any) {
-            alert(error.message);
+        } catch (error: unknown) {
+            if (!(error instanceof FirebaseError)) {
+                console.error("Error is not firebare error somehow");
+                return;
+            }
+            if (error.code == "auth/invalid-credential") {
+                setLoginErrorMsg("Invalid username or password");
+            } else {
+                setLoginErrorMsg(error.message);
+            }
         }
     };
 
     const handleLogout = async () => {
         await signOut(auth);
-        alert("Logged out!");
+        setLoginErrorMsg("");
+        setUsername("");
+        setPassword("");
+        // alert("Logged out!");
     };
 
     const handlePasswordChange = async () => {
         if (auth.currentUser && newPassword.length >= 6) {
             try {
+                // TODO: Delete these comments once issue #1 is fixed or ctrl pannel is implemented
+                // Uncomment to delete accounts
+                // await deleteUser(auth.currentUser);
                 await updatePassword(auth.currentUser, newPassword);
                 alert("Password updated!");
                 setNewPassword("");
             } catch (error: any) {
-                alert(error.message);
+                setLoginErrorMsg(error.message);
             }
         } else {
-            alert("Password must be at least 6 characters.");
+            setLoginErrorMsg("Password must be at least 6 characters.");
         }
     };
 
@@ -244,6 +264,7 @@ export default function MainPage() {
                                                 />
                                                 <McButton type="submit">Change Password</McButton>
                                                 <McButton onClick={handleLogout}>Log Out</McButton>
+                                                <p className="mg-form-error">{loginErrorMsg}</p>
                                             </form>
                                         </div>
                                     </>
@@ -291,6 +312,7 @@ export default function MainPage() {
                                                     type="password"
                                                 />
                                                 <McButton type="submit">{isLogin ? "Log In" : "Sign Up"}</McButton>
+                                                <p className="mg-form-error">{loginErrorMsg}</p>
                                             </form>
                                         </div>
                                     </>
