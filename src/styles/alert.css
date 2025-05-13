@@ -1,0 +1,65 @@
+/* Base alert style */
+.alertBase {
+  position: absolute;
+  z-index: 9999;
+  color: white;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.6rem;
+  padding: 0.75rem 1rem;
+  border: 2px solid #aa0000;
+  background-color: #cc0000;
+  box-shadow: 2px 2px 0 #550000;
+  animation: alertPop 0.4s ease-out;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  max-width: 240px;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+}
+
+.alertBase button {
+  background: none;
+  border: none;
+  color: white;
+  font-family: inherit;
+  cursor: pointer;
+  font-size: 0.6rem;
+  padding: 0;
+  margin: 0;
+}
+
+@keyframes alertPop {
+  0% { transform: translateY(-1rem); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* Home alert positioning: top-right corner of the right page */
+.alertHome {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  text-align: left;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .alertBase {
+    font-size: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    max-width: 160px;
+  }
+  .alertBase button {
+    font-size: 0.5rem;
+  }
+  .alertHome {
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+}
+
+/* Play and Panel alerts (to be styled later) */
+.alertPlay {}
+.alertPanel {}

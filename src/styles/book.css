@@ -299,8 +299,13 @@
           }
         }
       }
+      
     }
   }
+}
+
+.right-page {
+  position: relative;
 }
 
 @media (width < 748px) {
