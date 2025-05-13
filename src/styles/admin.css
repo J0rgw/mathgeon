@@ -1,0 +1,43 @@
+.mg-admin-table {
+    margin: 16px;
+    padding: 8px 24px;
+
+    font-family: 'Grand9KPixel', monospace;
+    font-size: 14px;
+    color: #2a1b08;
+    background-color: #827373;
+
+    box-shadow:
+        #00000088 -5px -5px 0 inset,
+        #ffffff88 5px 5px 0 inset
+    ;
+}
+
+.mg-admin-table-data {
+    margin: 16px 0;
+    padding: 12px;
+
+    box-shadow:
+        #ffffff88 -3px -3px 0 inset,
+        #00000088 3px 3px 0 inset
+    ;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.mg-admin-table-data p {
+    margin: 0;
+}
+
+.mg-admin-table-delete {
+    border-color: red;
+    color: #640000;
+
+    box-shadow: red 0 0 16px;
+
+    &:hover {
+        background-color: #500e0888;
+        color: #ffffff;
+    }
+}
