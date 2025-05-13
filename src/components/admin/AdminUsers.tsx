@@ -16,12 +16,10 @@ function AdminUsers() {
     function murder(uid: string) {
         deleteUserByUid(uid)
             .then(()=>{
-                console.log("deletus");
-                
+                console.log("I can't believe he's fucking dead!");
                 fetchUsers()
                     .then((users)=>{
                         setUsersElements(buildTable(users));
-                        console.log("regen");
                     });
             })
     }
@@ -36,6 +34,7 @@ function AdminUsers() {
                         <p>{users[uid].email}</p>
                     </div>
                     <div>
+                        <button className="mg-admin-table-ban" onClick={() => murder(uid)}>Ban</button>
                         <button className="mg-admin-table-delete" onClick={() => murder(uid)}>Delete</button>
                     </div>
                 </div>
