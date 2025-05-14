@@ -1,15 +1,27 @@
+.mg-admin-title {
+    font-family: 'Press Start 2P', monospace;
+    text-align: center;
+}
+h1.mg-admin-title {
+    font-size: 2rem;
+    color: #fff4ca;
+}
+h2.mg-admin-title {
+    font-size: 1.5rem;
+    color: #e4c598;
+}
+
 .mg-admin-table {
-    margin: 16px;
+    margin: auto;
+    width: calc(100% - 32px);
+    max-width: 720px;
     padding: 8px 24px;
 
     font-family: 'Grand9KPixel', monospace;
     font-size: 14px;
     color: #2a1b08;
     background-color: #827373;
-
-    /* Fluid */
     
-
     box-shadow:
         #00000088 -5px -5px 0 inset,
         #ffffff88 5px 5px 0 inset
@@ -31,6 +43,47 @@
 }
 .mg-admin-table-data p {
     margin: 0;
+}
+
+.mg-admin-field-editor {
+    margin: auto;
+    padding: 24px;
+
+    font-family: 'Grand9KPixel', monospace;
+    font-size: 14px;
+    color: #2a1b08;
+    background-color: #827373;
+
+    box-shadow:
+        #00000088 -5px -5px 0 inset,
+        #ffffff88 5px 5px 0 inset,
+        #00000088 0 10px 2rem
+    ;
+
+    > h2 {
+        margin-top: 0;
+    }
+    > div {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        > label {
+            flex-basis: 80px;
+            flex-shrink: 0;
+        }
+        > input[type=text] {
+            max-width: none;
+        }
+        > button {
+            flex-basis: 200px;
+        }
+    }
+
+    &::backdrop {
+        background-color: #00000088;
+        backdrop-filter: blur(1lvh);
+    }
 }
 
 .mg-admin-table-delete {
@@ -72,6 +125,22 @@
     &:hover {
         background-color: #818a4588;
         color: #ffffff;
+        animation: float 2s infinite linear;
+    }
+}
+.mg-admin-table-create {
+    border-color: #bbd672;
+    color: #ffffff;
+
+    box-shadow: #a9ee28 0 0 16px;
+    background-color: #6f7c4c;
+
+    width: 150px;
+    height: 100%;
+
+    &:hover {
+        background-color: #125d2f88;
+        color: #f4e5d9;
         animation: float 2s infinite linear;
     }
 }
