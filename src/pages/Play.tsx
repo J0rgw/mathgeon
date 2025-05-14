@@ -7,7 +7,7 @@ import { solve } from "../logic/gameplay/solver";
 import { MgPlayProps } from "../types/MgProps";
 import { MgDifficulty } from "../types/MgDifficulty";
 import McButton from "../components/McButton";
-import { onAuthStateChanged, User } from "firebase/auth";
+import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { auth } from "../services/firebase";
 import { getDatabase, onValue, ref } from "firebase/database";
 import { useNavigate } from "react-router-dom";
@@ -56,10 +56,35 @@ function Play(props: MgPlayProps) {
             if (firebaseUser) {
                 setUser(firebaseUser);
                 const db = getDatabase();
-                const usernameRef = ref(db, `users/${firebaseUser.uid}/username`);
+                const usernameRef = ref(db, `users/${firebaseUser.uid}`);
                 onValue(usernameRef, (snapshot) => {
-                    const name = snapshot.val();
+                    const my = snapshot.val();
+                    const name = my.username;
                     if (name) setUsername(name);
+
+                    // Get account status
+                    let status = "";
+                    if (my.status) {
+                        if (my.status?.includes("deleted")) {
+                            status = "deleted";
+                        } else if (my.status?.includes("banned")) {
+                            status = "banned";
+                        }
+                    }
+                    // Handle statuses
+                    switch (status) {
+                        case "deleted":
+                            signOut(auth);
+                            return;
+                    
+                        case "banned":
+                            console.warn("GTFO of here loser!");
+                            navigate("/");
+                            return;
+    
+                        default:
+                            break;
+                    }
                 });
                 console.log("logged in");
             } else {

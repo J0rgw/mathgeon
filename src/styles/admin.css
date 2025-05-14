@@ -49,9 +49,25 @@
     box-shadow: #ffa200 0 0 16px;
 
     margin: 0 8px;
+    width: 120px;
 
     &:hover {
         background-color: #8a684588;
+        color: #ffffff;
+        animation: float 2s infinite linear;
+    }
+}
+.mg-admin-table-unban {
+    border-color: #8bad2f;
+    color: #201e18;
+
+    box-shadow: #a9ee28 0 0 16px;
+
+    margin: 0 8px;
+    width: 120px;
+
+    &:hover {
+        background-color: #818a4588;
         color: #ffffff;
         animation: float 2s infinite linear;
     }

@@ -14,7 +14,7 @@ export const fetchUsers = async () => {
             !users[uid]?.status ||
             !users[uid]?.status?.includes("deleted")
         ) {
-            console.log(users[uid]?.status);
+            // console.log(users[uid]?.status);
             users2[uid] = users[uid];
         }
     }
@@ -41,6 +41,34 @@ export const deleteUserByUid = async (uid: string) => {
     }
 
     let userStatus: any[] = users[uid].status ?? [];
-    userStatus.push("deleted");
+    if (!userStatus.includes("deleted")) userStatus.push("deleted");
+    set(ref(db, `users/${uid}/status`), userStatus);
+}
+export const banUserByUid = async (uid: string) => {
+    banOrUnbanUserByUid(uid, true)
+}
+export const unbanUserByUid = async (uid: string) => {
+    banOrUnbanUserByUid(uid, false)
+}
+const banOrUnbanUserByUid = async (uid: string, ban: boolean) => {
+    const db = getDatabase();
+    const snapshot = await get(ref(db, "users"));
+    
+    if (!snapshot.exists()) {
+        return UserErrorType.NO_SNAPSHOT;
+    }
+    
+    const users = snapshot.val();
+    
+    if (!users[uid]) {
+        return UserErrorType.NO_USER_WITH_UID;
+    }
+
+    let userStatus: any[] = users[uid].status ?? [];
+    if (ban) {
+        if (!userStatus.includes("banned")) userStatus.push("banned");
+    } else {
+        if (userStatus.includes("banned")) userStatus.splice(userStatus.indexOf("banned"), 1);
+    }
     set(ref(db, `users/${uid}/status`), userStatus);
 }

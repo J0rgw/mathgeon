@@ -154,9 +154,19 @@ export default function MainPage() {
                 const snapshot = await get(usersRef);
                 const users = snapshot.val();
                 let emailFound: string | null = null;
+                let status = "";
                 for (const uid in users) {
                     if (users[uid].username === username) {
+                        // Get email
                         emailFound = users[uid].email;
+                        // Get account status
+                        if (users[uid].status) {
+                            if (users[uid].status?.includes("deleted")) {
+                                status = "deleted";
+                            } else if (users[uid].status?.includes("banned")) {
+                                status = "banned";
+                            }
+                        }
                         break;
                     }
                 }
@@ -165,6 +175,19 @@ export default function MainPage() {
                     // When the security is sus
                     setLoginErrorMsg("Invalid username or password");
                     return;
+                }
+                // Handle statuses
+                switch (status) {
+                    case "deleted":
+                        setLoginErrorMsg("Invalid username or password");
+                        return;
+                
+                    case "banned":
+                        setLoginErrorMsg("This account is banned");
+                        return;
+
+                    default:
+                        break;
                 }
                 await signInWithEmailAndPassword(auth, emailFound, password);
                 setLoginErrorMsg("");

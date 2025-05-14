@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { deleteUserByUid, fetchUsers } from "../../services/users";
+import { banUserByUid, deleteUserByUid, fetchUsers, unbanUserByUid } from "../../services/users";
 import { User } from "firebase/auth";
 
 import '../../styles/admin.css';
@@ -7,16 +7,49 @@ import '../../styles/admin.css';
 function AdminUsers() {
     const [usersElements, setUsersElements] = useState<any>(null);
     useEffect(() => {
-        fetchUsers()
-            .then((users)=>{
-                setUsersElements(buildTable(users));
-            });
+        const interval = setInterval(() => {
+            fetchUsers()
+                .then((users)=>{
+                    setUsersElements(buildTable(users));
+                });
+        }, 1000);
+
+        return ()=>{
+            clearInterval(interval);
+        }
     }, []);
 
     function murder(uid: string) {
         deleteUserByUid(uid)
             .then(()=>{
-                console.log("I can't believe he's fucking dead!");
+                // console.log("I can't believe he's fucking dead!");
+                fetchUsers()
+                    .then((users)=>{
+                        setUsersElements(buildTable(users));
+                    });
+            })
+    }
+    
+    function isBanned(user: any) {
+        if (!user.status) {
+            return false;
+        }
+        return user.status?.includes("banned");
+    }
+    function ban(uid: string) {
+        banUserByUid(uid)
+            .then(()=>{
+                console.log("Bonk!");
+                fetchUsers()
+                    .then((users)=>{
+                        setUsersElements(buildTable(users));
+                    });
+            })
+    }
+    function unban(uid: string) {
+        unbanUserByUid(uid)
+            .then(()=>{
+                console.log("!knoB");
                 fetchUsers()
                     .then((users)=>{
                         setUsersElements(buildTable(users));
@@ -34,7 +67,11 @@ function AdminUsers() {
                         <p>{users[uid].email}</p>
                     </div>
                     <div>
-                        <button className="mg-admin-table-ban" onClick={() => murder(uid)}>Ban</button>
+                        {isBanned(users[uid]) ?
+                            <button className="mg-admin-table-unban" onClick={() => unban(uid)}>Unban</button>
+                        :
+                            <button className="mg-admin-table-ban" onClick={() => ban(uid)}>Ban</button>
+                        }
                         <button className="mg-admin-table-delete" onClick={() => murder(uid)}>Delete</button>
                     </div>
                 </div>
