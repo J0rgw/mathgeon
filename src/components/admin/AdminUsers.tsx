@@ -1,33 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { banUserByUid, deleteUserByUid, fetchUsers, unbanUserByUid } from "../../services/users";
-import { User } from "firebase/auth";
 
 import '../../styles/admin.css';
+import { getDatabase, onValue, ref } from "firebase/database";
 
 function AdminUsers() {
     const [usersElements, setUsersElements] = useState<any>(null);
     useEffect(() => {
-        const interval = setInterval(() => {
-            fetchUsers()
-                .then((users)=>{
-                    setUsersElements(buildTable(users));
-                });
-        }, 1000);
+        const db = getDatabase();
+        const reference = ref(db, "users");
+        const unsubscribeFn = onValue(reference, (snapshot) => {
+            if (snapshot.exists()) {
+                setUsersElements(buildTable(snapshot.val()));
+            } else {
+                console.error("Couldn't obtain user data from database");
+            }
+        })
 
         return ()=>{
-            clearInterval(interval);
+            unsubscribeFn();
         }
     }, []);
 
     function murder(uid: string) {
         deleteUserByUid(uid)
             .then(()=>{
-                // console.log("I can't believe he's fucking dead!");
-                fetchUsers()
-                    .then((users)=>{
-                        setUsersElements(buildTable(users));
-                    });
-            })
+                console.log("player murdered successfully");
+            });
     }
     
     function isBanned(user: any) {
@@ -40,26 +39,22 @@ function AdminUsers() {
         banUserByUid(uid)
             .then(()=>{
                 console.log("Bonk!");
-                fetchUsers()
-                    .then((users)=>{
-                        setUsersElements(buildTable(users));
-                    });
             })
     }
     function unban(uid: string) {
         unbanUserByUid(uid)
             .then(()=>{
                 console.log("!knoB");
-                fetchUsers()
-                    .then((users)=>{
-                        setUsersElements(buildTable(users));
-                    });
             })
     }
 
     function buildTable(users: any) {
         let usersReact = [];
         for (const uid in users) {
+            if (users[uid]?.status?.includes("deleted")) {
+                continue;
+            }
+
             usersReact.push(
                 <div key={uid} className="mg-admin-table-data">
                     <div>

@@ -1,43 +1,39 @@
 import { useEffect, useState } from "react";
-import { createDungeon, deleteDungeonByUid, fetchDungeons } from "../../services/dungeons";
+import { createDungeon, deleteDungeonByUid } from "../../services/dungeons";
 import McInput from "../McInput";
 import AdminFieldEditor from "./AdminFieldEditor";
+import { getDatabase, onValue, ref } from "firebase/database";
 
 function AdminDungeons() {
     const [dungeonsElements, setDungeonsElements] = useState<any>(null);
     const [dungeonsUids, setDungeonsUids] = useState("");
     const [dungeonsNames, setDungeonsNames] = useState("");
+    const [fieldEditor, setFieldEditor] = useState<React.JSX.Element | null>(null);
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            fetchDungeons()
-                .then((dungeons)=>{
-                    setDungeonsElements(buildTable(dungeons));
-                });
-        }, 1000);
+        const db = getDatabase();
+        const reference = ref(db, "dungeons");
+        const unsubscribeFn = onValue(reference, (snapshot) => {
+            if (snapshot.exists()) {
+                setDungeonsElements(buildTable(snapshot.val()));
+            } else {
+                console.error("Couldn't obtain dungeon data from database");
+            }
+        })
 
         return ()=>{
-            clearInterval(interval);
+            unsubscribeFn();
         }
     }, []);
 
     function remove(uid: string) {
-        deleteDungeonByUid(uid)
-            .then(()=>{
-                fetchDungeons()
-                    .then((dungeons)=>{
-                        setDungeonsElements(buildTable(dungeons));
-                    });
-            })
+        deleteDungeonByUid(uid);
     }
     function create(uid: string, name: string) {
-        createDungeon(uid, name)
-            .then(()=>{
-                fetchDungeons()
-                    .then((dungeons)=>{
-                        setDungeonsElements(buildTable(dungeons));
-                    });
-            })
+        createDungeon(uid, name);
+    }
+    function edit(uid: string, currentName: string) {
+        setFieldEditor(<AdminFieldEditor field={`dungeons/${uid}/name`} oldValue={currentName}></AdminFieldEditor>);
     }
 
     function buildTable(dungeons: any) {
@@ -50,7 +46,7 @@ function AdminDungeons() {
                         <p>{dungeons[uid].name}</p>
                     </div>
                     <div>
-                        <button className="mg-admin-table-ban" onClick={() => {}}>Edit</button>
+                        <button className="mg-admin-table-ban" onClick={() => {edit(uid, dungeons[uid].name)}}>Edit</button>
                         <button className="mg-admin-table-delete" onClick={() => remove(uid)}>Delete</button>
                     </div>
                 </div>
@@ -73,7 +69,7 @@ function AdminDungeons() {
                     </div>
                 </div>
             </div>
-            <AdminFieldEditor field="dungeons/Cream-of-Mushroom/name" oldValue="Cream of Mushroom"></AdminFieldEditor>
+            {fieldEditor}
         </>
     );
 }
