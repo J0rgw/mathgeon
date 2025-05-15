@@ -5,10 +5,10 @@ import "../styles/alert.css";
 interface AlertMessageProps {
     message: string;
     type: "home" | "play" | "panel";
+    onClose: VoidFunction
 }
 
-const AlertMessage: React.FC<AlertMessageProps> = ({ message, type }) => {
-    const [visible, setVisible] = useState(true);
+const AlertMessage: React.FC<AlertMessageProps> = ({ message, type, onClose }) => {
     const className =
         type === "home"
             ? "alertHome"
@@ -16,12 +16,16 @@ const AlertMessage: React.FC<AlertMessageProps> = ({ message, type }) => {
                 ? "alertPlay"
                 : "alertPanel";
 
-    if (!visible) return null;
+    if (message == "") return null;
 
     return (
         <div className={`alertBase ${className}`}>
             <span>{message}</span>
-            <button onClick={() => setVisible(false)}>✖</button>
+            <button onClick={() => {
+                onClose();
+            }}>
+                ✖
+            </button>
         </div>
     );
 };

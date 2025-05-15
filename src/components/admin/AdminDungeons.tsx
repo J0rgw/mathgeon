@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createDungeon, deleteDungeonByUid } from "../../services/dungeons";
 import McInput from "../McInput";
 import AdminFieldEditor from "./AdminFieldEditor";
@@ -8,7 +8,9 @@ function AdminDungeons() {
     const [dungeonsElements, setDungeonsElements] = useState<any>(null);
     const [dungeonsUids, setDungeonsUids] = useState("");
     const [dungeonsNames, setDungeonsNames] = useState("");
-    const [fieldEditor, setFieldEditor] = useState<React.JSX.Element | null>(null);
+    const [editorUid, setEditorUid] = useState("");
+    const [editorCurrentName, setEditorCurrentName] = useState("");
+    const [editorOpen, setEditorOpen] = useState(false);
 
     useEffect(() => {
         const db = getDatabase();
@@ -30,10 +32,14 @@ function AdminDungeons() {
         deleteDungeonByUid(uid);
     }
     function create(uid: string, name: string) {
+        setDungeonsUids("");
+        setDungeonsNames("");
         createDungeon(uid, name);
     }
     function edit(uid: string, currentName: string) {
-        setFieldEditor(<AdminFieldEditor field={`dungeons/${uid}/name`} oldValue={currentName}></AdminFieldEditor>);
+        setEditorUid(`dungeons/${uid}/name`);
+        setEditorCurrentName(currentName);
+        setEditorOpen(true);
     }
 
     function buildTable(dungeons: any) {
@@ -69,7 +75,7 @@ function AdminDungeons() {
                     </div>
                 </div>
             </div>
-            {fieldEditor}
+            {<AdminFieldEditor field={editorUid} oldValue={editorCurrentName} open={editorOpen} onClose={() => setEditorOpen(false)}></AdminFieldEditor>}
         </>
     );
 }

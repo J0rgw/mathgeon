@@ -40,7 +40,7 @@ export default function MainPage() {
     // Índice de la página actual del libro (scroll horizontal)
     const [currentPage, setCurrentPage] = useState(0);
 
-    // Mensaje de error a mostrar en alertas (login/signup)
+    // Mensaje de error a mostrar en alertas (login/signup) y datos relacionados
     const [loginErrorMsg, setLoginErrorMsg] = useState("");
 
     // Alterna entre modo login (true) o registro (false)
@@ -261,11 +261,12 @@ export default function MainPage() {
     };
 
     return (
-        <div className="fakeroot"> {/* Fake Root allows us to not f*ck up every other page */}
+        <div className="fakeroot"> {/* Fake Root holds the styles that were previously in the <body>. This way other pages don't inherit this page's style */}
             <div className="container">
                 <div className="sprite-wrapper">
                     <div className="book">
-                                        {loginErrorMsg && <AlertMessage message={loginErrorMsg} type="home" />}
+                        {/* Error handling */}
+                        <AlertMessage message={loginErrorMsg} type="home" onClose={()=>setLoginErrorMsg("")} />
 
                         <div className="carousel" style={{ "--slides": "4" } as React.CSSProperties}>
                             <div className="sprite" />

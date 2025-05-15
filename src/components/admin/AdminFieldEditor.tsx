@@ -5,7 +5,9 @@ import { set } from "../../services/firebase";
 
 export type AdminFieldEditorProps = {
     field: string, // path to firebase registry
-    oldValue?: string
+    onClose: VoidFunction, // would be unclosable without this
+    oldValue?: string,
+    open?: boolean,
 }
 
 function AdminFieldEditor(props: AdminFieldEditorProps) {
@@ -13,16 +15,19 @@ function AdminFieldEditor(props: AdminFieldEditorProps) {
     const [newValue, setNewValue] = useState(props.oldValue ?? "");
 
     useEffect(() => {
-        dialog.current?.showModal();
-    }, []);
+        if (props.open) {
+            dialog.current?.showModal();
+        };
+    });
 
     function persist() {
+        props.onClose(); // fix visibility issues by not waiting for the event to fire
         set(props.field, newValue);
         dialog.current?.close();
     }
 
     return (
-        <dialog className="mg-admin-field-editor" ref={dialog}>
+        <dialog className="mg-admin-field-editor" ref={dialog} onClose={props.onClose} onToggle={()=>{setNewValue(props.oldValue ?? "")}}>
             <h2>Editing <span style={{color: "#e79333"}}>{props.field}</span></h2>
             <div>
                 <label>New Value:</label>
