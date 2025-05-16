@@ -10,7 +10,7 @@ import McButton from "../components/McButton";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { auth } from "../services/firebase";
 import { getDatabase, onValue, ref } from "firebase/database";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 // CONSTANTS                      _
 const IMG_RATIO = 16.0/9.0;  // 1.7  <-- infinite 7s lol
@@ -24,28 +24,65 @@ const BASE_Y_SIZE = 85;
 const BASE_X_PADDING = 10;
 const BASE_Y_PADDING = 10;
 
-function Play(props: MgPlayProps) {
+function Play() {
     const background: RefObject<null | HTMLDivElement> = useRef(null);
     const navigate = useNavigate();
     const [equation, setEquation] = useState(new Equation(""))
     const [userInput, setUserInput] = useState("")
 
-    const difficulty = props.difficulty ?? MgDifficulty.MID;
-    let difficultyClass: string;
-    let levelName: string;
-    switch (difficulty) {
-        case MgDifficulty.EASY:
-            difficultyClass = "mg-gameplay-easy";
-            levelName = "Cavern of Addition";
-            break;
-        case MgDifficulty.MID:
-            difficultyClass = "mg-gameplay-moderate";
-            levelName = "Crypt of Multiplication";
-            break;
-        case MgDifficulty.HARD:
-            difficultyClass = "mg-gameplay-hard";
-            levelName = "Temple of Algebra";
-            break;
+    // Dungeon data
+    const { dungeonId } = useParams();
+    const [dungeonName, setDungeonName] = useState("");
+    const [dungeonBackground, setDungeonBackground] = useState("");
+    const [dungeonDifficulties, setDungeonDifficulties] = useState<MgDifficulty[]>([]);
+
+    // Get Dungeon Data
+    useEffect(() => {
+        const db = getDatabase();
+        const reference = ref(db, `dungeons/${dungeonId}`);
+        const unsubscribeFn = onValue(reference, (snapshot) => {
+            if (snapshot.exists()) {
+                const dungeon = snapshot.val();
+                setDungeonName(dungeon.name);
+                setDungeonBackground(dungeon.background);
+                let difficulties: MgDifficulty[] = dungeon.difficulties.map((value: string) => {
+                    console.log(value);
+                    switch (value) {
+                        case "EASY":
+                            return MgDifficulty.EASY;
+                    
+                        case "MID":
+                            return MgDifficulty.MID;
+                        
+                        case "HARD":
+                            return MgDifficulty.HARD;
+
+                        default:
+                            return MgDifficulty.MID;
+                    }
+                });
+                if (difficulties.length == 0) {
+                    difficulties = [MgDifficulty.MID];
+                }
+                setDungeonDifficulties(difficulties);
+
+                // Generate without using state, it won't work here
+                // INFO: Changes in database will generate another equation
+                initGenerators()
+                    .then(async ()=>{
+                        setEquation(await generateEquation(difficulties[Math.floor(Math.random() * difficulties.length)]));
+                    })
+                ;
+            }
+        })
+
+        return ()=>{
+            unsubscribeFn();
+        }
+    }, [])
+
+    function getDungeonDifficulty() {
+        return dungeonDifficulties[Math.floor(Math.random() * dungeonDifficulties.length)];
     }
 
     // Auth
@@ -91,17 +128,12 @@ function Play(props: MgPlayProps) {
     }, []);
     
 
+    // Resize event listener
     useEffect(()=>{
         calculateEquationTransform(background);
         const evListener = ()=>calculateEquationTransform(background);
         window.addEventListener("resize", evListener);
         // console.log("loaded resize fix listener");
-        
-        initGenerators()
-            .then(async ()=>{
-                setEquation(await generateEquation(difficulty));
-            })
-        ;
 
         return () => {
             window.removeEventListener("resize", evListener);
@@ -113,7 +145,7 @@ function Play(props: MgPlayProps) {
         const res = solve(equation.getRaw());
         if (res == userInput) {
             setUserInput("");
-            setEquation(await generateEquation(difficulty));
+            setEquation(await generateEquation(getDungeonDifficulty()));
             alert("Yaaay!");
         } else {
             alert("You stupid")
@@ -121,13 +153,13 @@ function Play(props: MgPlayProps) {
     }
 
     return (
-        <div className={`mg-gameplay ${difficultyClass}`} ref={background}>
+        <div className="mg-gameplay" style={{backgroundImage: `url(${dungeonBackground})`}} ref={background}>
             {/* Equation in Background */}
             <div className="mg-gameplay-equation-door">
                 <p>{equation.getLatex()}</p>
             </div>
             {/* Gameplay */}
-            <h1>{levelName}</h1>
+            <h1>{dungeonName}</h1>
             <div className="">
                 <div className="">
                     <form action={validateRes} className="">

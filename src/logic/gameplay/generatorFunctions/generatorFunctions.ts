@@ -25,6 +25,8 @@ let available = false;
 
 // Compiles all Grand Expressions, should only be called once
 export function allocGrandExpressions() {
+    if (available) return;
+
     gMap = Object.fromEntries(UNCOMPILED_GRAND_EXPRESSIONS.map(grandex => [grandex, compile(grandex)]));
     // HACK: Save on memory like greedy bastards that hate performance
     // gMap = {};

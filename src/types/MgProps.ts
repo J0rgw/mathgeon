@@ -6,7 +6,10 @@ export type MgChildrenProps = {
 }
 
 export type MgPlayProps = {
-    difficulty?: MgDifficulty
+    dungeon: string,
+    dungeonBackgroundClass: string,
+    dungeonDisplayName: string,
+    dungeonDifficulties: MgDifficulty[]
 }
 
 export type MgPanelProps = {
