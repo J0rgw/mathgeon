@@ -27,8 +27,6 @@ const BASE_Y_PADDING = 10;
 function Play(props: MgPlayProps) {
     const background: RefObject<null | HTMLDivElement> = useRef(null);
     const navigate = useNavigate();
-    const [user, setUser] = useState<User | null>(null);
-    const [username, setUsername] = useState("");
     const [equation, setEquation] = useState(new Equation(""))
     const [userInput, setUserInput] = useState("")
 
@@ -54,13 +52,10 @@ function Play(props: MgPlayProps) {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
             if (firebaseUser) {
-                setUser(firebaseUser);
                 const db = getDatabase();
                 const usernameRef = ref(db, `users/${firebaseUser.uid}`);
                 onValue(usernameRef, (snapshot) => {
                     const my = snapshot.val();
-                    const name = my.username;
-                    if (name) setUsername(name);
 
                     // Get account status
                     let status = "";
