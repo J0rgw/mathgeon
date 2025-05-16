@@ -20,13 +20,13 @@ export const deleteDungeonByUid = async (uid: string) => {
     const snapshot = await get(ref(db, "dungeons"));
     
     if (!snapshot.exists()) {
-        return DungeonErrorType.NO_SNAPSHOT;
+        throw DungeonErrorType.NO_SNAPSHOT;
     }
     
     const users = snapshot.val();
     
     if (!users[uid]) {
-        return DungeonErrorType.NO_USER_WITH_UID;
+        throw DungeonErrorType.NO_USER_WITH_UID;
     }
 
     set(ref(db, `dungeons/${uid}`), null);

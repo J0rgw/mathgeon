@@ -1,5 +1,6 @@
 import { deleteUser } from "firebase/auth";
 import { ref, get, set, getDatabase } from "firebase/database";
+import { auth } from "./firebase";
 
 export const fetchUsers = async () => {
     const db = getDatabase();
@@ -31,13 +32,13 @@ export const deleteUserByUid = async (uid: string) => {
     const snapshot = await get(ref(db, "users"));
     
     if (!snapshot.exists()) {
-        return UserErrorType.NO_SNAPSHOT;
+        throw UserErrorType.NO_SNAPSHOT;
     }
     
     const users = snapshot.val();
     
     if (!users[uid]) {
-        return UserErrorType.NO_USER_WITH_UID;
+        throw UserErrorType.NO_USER_WITH_UID;
     }
 
     let userStatus: any[] = users[uid].status ?? [];
@@ -55,13 +56,13 @@ const banOrUnbanUserByUid = async (uid: string, ban: boolean) => {
     const snapshot = await get(ref(db, "users"));
     
     if (!snapshot.exists()) {
-        return UserErrorType.NO_SNAPSHOT;
+        throw UserErrorType.NO_SNAPSHOT;
     }
     
     const users = snapshot.val();
     
     if (!users[uid]) {
-        return UserErrorType.NO_USER_WITH_UID;
+        throw UserErrorType.NO_USER_WITH_UID;
     }
 
     let userStatus: any[] = users[uid].status ?? [];
@@ -71,4 +72,31 @@ const banOrUnbanUserByUid = async (uid: string, ban: boolean) => {
         if (userStatus.includes("banned")) userStatus.splice(userStatus.indexOf("banned"), 1);
     }
     set(ref(db, `users/${uid}/status`), userStatus);
+}
+
+
+export const amIAdmin = async () => {
+    if (auth.currentUser == null) {
+        return false;
+    }
+
+    const db = getDatabase();
+    const snapshot = await get(ref(db, "users"));
+    
+    if (!snapshot.exists()) {
+        throw UserErrorType.NO_SNAPSHOT;
+    }
+    
+    const users = snapshot.val();
+    
+    if (!users[auth.currentUser.uid]) {
+        throw UserErrorType.NO_USER_WITH_UID;
+    }
+
+    // Comprobar si tenemos el rol de super admin
+    const myRoles = users[auth.currentUser.uid].roles ?? [];
+    if (myRoles.includes("superAdmin")) {
+        return true;
+    }
+    return false;
 }

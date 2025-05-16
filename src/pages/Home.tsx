@@ -19,6 +19,7 @@ import "../styles/homeLayout.css";
 import { Link } from "react-router-dom";
 import { FirebaseError } from "firebase/app";
 import AlertMessage from "../components/AlertMessage";
+import { amIAdmin } from "../services/users";
 
 // Constants
 const REGEX_EMAIL = /^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/;
@@ -36,6 +37,9 @@ interface LeaderboardEntry {
 export default function MainPage() {
     // Estado de usuario autenticado (Firebase)
     const [user, setUser] = useState<User | null>(null);
+
+    // Indica si somos o no administradores
+    const [isAdmin, setIsAdmin] = useState(false);
 
     // Índice de la página actual del libro (scroll horizontal)
     const [currentPage, setCurrentPage] = useState(0);
@@ -68,10 +72,18 @@ export default function MainPage() {
             setUser(firebaseUser);
             if (firebaseUser) {
                 const db = getDatabase();
-                const usernameRef = ref(db, `users/${firebaseUser.uid}/username`);
-                onValue(usernameRef, (snapshot) => {
-                    const name = snapshot.val();
-                    if (name) setUsername(name);
+                const userRef = ref(db, `users/${firebaseUser.uid}`);
+                onValue(userRef, (snapshot) => {
+                    const name = snapshot.val().username;
+                    if (name) {
+                        setUsername(name);
+                        const myRoles = snapshot.val().roles ?? [];
+                        if (myRoles.includes("superAdmin")) {
+                            setIsAdmin(true);
+                        } else {
+                            setIsAdmin(false);
+                        }
+                    }
                 });
             } else {
                 setUsername("");
@@ -236,6 +248,7 @@ export default function MainPage() {
         setLoginErrorMsg("");
         setUsername("");
         setPassword("");
+        setIsAdmin(false); // para evitar popping al iniciar sesión con no-administrador después de iniciar sesión como administrador
         // alert("Logged out!");
     };
 
@@ -306,6 +319,11 @@ export default function MainPage() {
                                                     <h3 className="profile-title">Welcome, {username || "..."}</h3>
                                                     <p className="profile-text">Email: {user.email}</p>
                                                     <p className="profile-text">Password: ********</p>
+                                                    {isAdmin &&
+                                                        <Link to={`/admin`}>
+                                                            <McButton onClick={()=>{}}>Administration Panel</McButton>
+                                                        </Link>
+                                                    }
                                                 </div>
                                             </div>
 
