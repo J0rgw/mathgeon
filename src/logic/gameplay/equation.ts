@@ -21,4 +21,8 @@ export class Equation {
     getLatex(): string {
         return this.latex;
     }
+
+    isEmpty() {
+        return this.raw == "";
+    }
 }

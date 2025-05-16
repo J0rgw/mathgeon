@@ -27,7 +27,7 @@ const BASE_Y_PADDING = 10;
 function Play() {
     const background: RefObject<null | HTMLDivElement> = useRef(null);
     const navigate = useNavigate();
-    const [equation, setEquation] = useState(new Equation(""))
+    const [equation, setEquation] = useState<Equation>(new Equation(""))
     const [userInput, setUserInput] = useState("")
 
     // Dungeon data
@@ -46,7 +46,7 @@ function Play() {
                 setDungeonName(dungeon.name);
                 setDungeonBackground(dungeon.background);
                 let difficulties: MgDifficulty[] = dungeon.difficulties.map((value: string) => {
-                    console.log(value);
+                    // console.log(value);
                     switch (value) {
                         case "EASY":
                             return MgDifficulty.EASY;
@@ -70,7 +70,11 @@ function Play() {
                 // INFO: Changes in database will generate another equation
                 initGenerators()
                     .then(async ()=>{
-                        setEquation(await generateEquation(difficulties[Math.floor(Math.random() * difficulties.length)]));
+                        if (equation.isEmpty()) {
+                            const newEq = await generateEquation(difficulties[Math.floor(Math.random() * difficulties.length)]);
+                            // console.log(newEq, newEq.isEmpty());
+                            if (!newEq.isEmpty()) setEquation(newEq);
+                        }
                     })
                 ;
             }
@@ -145,7 +149,8 @@ function Play() {
         const res = solve(equation.getRaw());
         if (res == userInput) {
             setUserInput("");
-            setEquation(await generateEquation(getDungeonDifficulty()));
+            const newEq = await generateEquation(getDungeonDifficulty());
+            if (!newEq.isEmpty()) setEquation(newEq);
             alert("Yaaay!");
         } else {
             alert("You stupid")

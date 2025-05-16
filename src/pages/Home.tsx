@@ -255,9 +255,6 @@ export default function MainPage() {
     const handlePasswordChange = async () => {
         if (auth.currentUser && newPassword.length >= 6) {
             try {
-                // TODO: Delete these comments once issue #1 is fixed or ctrl pannel is implemented
-                // Uncomment to delete accounts
-                // await deleteUser(auth.currentUser);
                 await updatePassword(auth.currentUser, newPassword);
                 alert("Password updated!");
                 setNewPassword("");
