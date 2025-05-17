@@ -134,6 +134,6 @@ function mid_pemdas2(): Equation {
     const c = generate("1..10|*1");
     const sign_a = generate("[0,1]") ? '+' : '-';
     
-    const a = generate(`-100..100|*1`);
+    const a = generate(`-10..10|*1`);
     return new Equation(`x = ${a} * (${b} ${sign_a} ${c})`);
 }

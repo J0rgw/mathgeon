@@ -4,7 +4,6 @@ import "../styles/gameplay.css"
 import { generateEquation, initGenerators } from "../logic/gameplay/generators";
 import { Equation } from "../logic/gameplay/equation";
 import { solve } from "../logic/gameplay/solver";
-import { MgPlayProps } from "../types/MgProps";
 import { MgDifficulty } from "../types/MgDifficulty";
 import McButton from "../components/McButton";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
@@ -151,9 +150,9 @@ function Play() {
             setUserInput("");
             const newEq = await generateEquation(getDungeonDifficulty());
             if (!newEq.isEmpty()) setEquation(newEq);
-            alert("Yaaay!");
+            // alert("Yaaay!");
         } else {
-            alert("You stupid")
+            // alert("You stupid");
         }
     }
 
@@ -164,10 +163,10 @@ function Play() {
                 <p>{equation.getLatex()}</p>
             </div>
             {/* Gameplay */}
-            <h1>{dungeonName}</h1>
-            <div className="">
-                <div className="">
-                    <form action={validateRes} className="">
+            <div className="mg-gameplay-flex">
+                <div className="mg-gameplay-panel">
+                    <h1>{dungeonName}</h1>
+                    <form action={validateRes} className="mg-gameplay-form">
                         {/* Equation in gameplay card */}
                         {/* TODO: Implement LaTex rendering. Change styles once LaTex is implemented */}
                         <p className="mg-gameplay-equation">
@@ -176,7 +175,7 @@ function Play() {
                         {/* Input */}
                         <div className="mg-gameplay-input">
                             <p>x = </p>
-                            <input type="text" placeholder="..." value={userInput} onChange={(e)=>{setUserInput(e.target.value)}} />
+                            <input type="number" placeholder="..." value={userInput} onChange={(e)=>{setUserInput(e.target.value)}} />
                         </div>
                         {/* Submit */}
                         <McButton type="submit">
