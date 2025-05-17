@@ -9,7 +9,10 @@
 mathgeonDB.json
 
 # Environment files
-.env
+# NOTE:
+#     https://vite.dev/guide/env-and-mode
+#     `.env` is pushed to VCS, `.env.local` is not
+# .env
 .env.*
 
 # Build and dependency folders

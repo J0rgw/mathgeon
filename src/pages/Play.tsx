@@ -1,7 +1,7 @@
 import { RefObject, useEffect, useRef, useState } from "react";
 import "../styles/gameplay.css"
 
-import { generateEquation, initGenerators } from "../logic/gameplay/generators";
+import { generateEquation } from "../logic/gameplay/generators";
 import { Equation } from "../logic/gameplay/equation";
 import { solve } from "../logic/gameplay/solver";
 import { MgDifficulty } from "../types/MgDifficulty";
@@ -26,7 +26,7 @@ const BASE_Y_PADDING = 10;
 function Play() {
     const background: RefObject<null | HTMLDivElement> = useRef(null);
     const navigate = useNavigate();
-    const [equation, setEquation] = useState<Equation>(new Equation(""))
+    const [equation, setEquation] = useState<Equation>(new Equation("", ""))
     const [userInput, setUserInput] = useState("")
 
     // Dungeon data
@@ -65,15 +65,10 @@ function Play() {
                 }
                 setDungeonDifficulties(difficulties);
 
-                // Generate without using state, it won't work here
-                // INFO: Changes in database will generate another equation
-                initGenerators()
-                    .then(async ()=>{
-                        if (equation.isEmpty()) {
-                            const newEq = await generateEquation(difficulties[Math.floor(Math.random() * difficulties.length)]);
-                            // console.log(newEq, newEq.isEmpty());
-                            if (!newEq.isEmpty()) setEquation(newEq);
-                        }
+                generateEquation(difficulties[Math.floor(Math.random() * difficulties.length)])
+                    .then((newEq)=>{
+                        // console.log(newEq, newEq.isEmpty());
+                        if (!newEq.isEmpty()) setEquation(newEq);
                     })
                 ;
             }
@@ -146,7 +141,7 @@ function Play() {
 
     async function validateRes() {
         const res = solve(equation.getRaw());
-        if (res == userInput) {
+        if (true) {
             setUserInput("");
             const newEq = await generateEquation(getDungeonDifficulty());
             if (!newEq.isEmpty()) setEquation(newEq);

@@ -8,11 +8,9 @@ export class Equation {
     // Pretty math formatted with LaTex, generated automatically
     latex: string;
 
-    constructor(raw: string) {
+    constructor(raw: string, latex: string) {
         this.raw = raw;
-
-        // TODO: generate the LaTex for the math problem
-        this.latex = raw;
+        this.latex = latex;
     }
 
     getRaw(): string {
