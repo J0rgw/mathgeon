@@ -141,7 +141,7 @@ function Play() {
 
     async function validateRes() {
         const res = solve(equation.getRaw());
-        if (true) {
+        if (res == userInput) {
             setUserInput("");
             const newEq = await generateEquation(getDungeonDifficulty());
             if (!newEq.isEmpty()) setEquation(newEq);

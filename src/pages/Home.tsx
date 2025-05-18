@@ -297,10 +297,18 @@ export default function MainPage() {
                                         </div>
                                     </div>
                                     <div className="page right-page" data-page="2">
-                                        
-                                        <p className="desc-text">
-                                            A roguelite dungeon where your sword is your mind.
-                                        </p>
+                                        {CSS.supports("selector(&::scroll-button(*))") ?
+                                            <p className="desc-text">
+                                                A roguelite dungeon where your sword is your mind.
+                                            </p>
+                                        :
+                                            <p className="desc-text">
+                                                A roguelite dungeon where your sword is your mind.
+                                                <br />
+                                                <br />
+                                                Use Arrow keys or Shift + Scroll to navigate
+                                            </p>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -459,6 +467,11 @@ export default function MainPage() {
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Fix navigation */}
+                            {/* <button type="button" className="nav nav-left">A</button>
+                            <div className="nav-progress">a</div>
+                            <button type="button" className="nav nav-right">A</button> */}
 
                         </div>
                     </div>
