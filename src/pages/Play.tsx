@@ -23,11 +23,17 @@ const BASE_Y_SIZE = 85;
 const BASE_X_PADDING = 10;
 const BASE_Y_PADDING = 10;
 
+const MAX_ROOMS_IN_DUNGEON = 10;
+
 function Play() {
     const background: RefObject<null | HTMLDivElement> = useRef(null);
     const navigate = useNavigate();
     const [equation, setEquation] = useState<Equation>(new Equation("", ""))
     const [userInput, setUserInput] = useState("")
+
+    // Game state
+    const [room, setRoom] = useState(1);
+    const [lives, setLives] = useState(3);
 
     // Dungeon data
     const { dungeonId } = useParams();
@@ -143,12 +149,32 @@ function Play() {
         const res = solve(equation.getRaw());
         if (res == userInput) {
             setUserInput("");
+            setRoom(room + 1);
             const newEq = await generateEquation(getDungeonDifficulty());
             if (!newEq.isEmpty()) setEquation(newEq);
             // alert("Yaaay!");
         } else {
+            setLives(lives - 1);
             // alert("You stupid");
         }
+    }
+
+    if (room > MAX_ROOMS_IN_DUNGEON) {
+        return (
+            <>
+                <h1>Yaaaaay!!!</h1>
+                <p>Pretend that there's a nice background or something</p>
+            </>
+        );
+    }
+
+    if (lives < 0) {
+        return (
+            <>
+                <h1>You fucking donkey</h1>
+                <p>Mathgeon stole your will to live (same tbh)</p>
+            </>
+        );
     }
 
     return (
@@ -161,6 +187,8 @@ function Play() {
             <div className="mg-gameplay-flex">
                 <div className="mg-gameplay-panel">
                     <h1>{dungeonName}</h1>
+                    <p>Room: {room}/{MAX_ROOMS_IN_DUNGEON}</p>
+                    <p>Lives: {lives}</p>
                     <form action={validateRes} className="mg-gameplay-form">
                         {/* Equation in gameplay card */}
                         {/* TODO: Implement LaTex rendering. Change styles once LaTex is implemented */}
@@ -236,11 +264,3 @@ function calculateEquationTransform(backgroundRef: RefObject<null | HTMLDivEleme
 }
 
 export default Play
-
-function setUser(firebaseUser: User | null) {
-    throw new Error("Function not implemented.");
-}
-function setUsername(name: any) {
-    throw new Error("Function not implemented.");
-}
-
