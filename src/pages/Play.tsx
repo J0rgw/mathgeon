@@ -10,6 +10,7 @@ import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { auth } from "../services/firebase";
 import { getDatabase, onValue, ref } from "firebase/database";
 import { useNavigate, useParams } from "react-router-dom";
+import { saveHighScore } from "../services/highscore";
 
 // CONSTANTS                      _
 const IMG_RATIO = 16.0/9.0;  // 1.7  <-- infinite 7s lol
@@ -23,13 +24,18 @@ const BASE_Y_SIZE = 85;
 const BASE_X_PADDING = 10;
 const BASE_Y_PADDING = 10;
 
-const MAX_ROOMS_IN_DUNGEON = 10;
+const MAX_ROOMS_IN_DUNGEON = 20;
 
 function Play() {
+    const [user, setUser] = useState<User | null>(null);
+
     const background: RefObject<null | HTMLDivElement> = useRef(null);
     const navigate = useNavigate();
-    const [equation, setEquation] = useState<Equation>(new Equation("", ""))
-    const [userInput, setUserInput] = useState("")
+    const [equation, setEquation] = useState<Equation>(new Equation("", ""));
+    const [userInput, setUserInput] = useState("");
+ 
+    const [points, setPoints] = useState(0);
+    const [combo, setCombo] = useState(1); // points get multiplied by this
 
     // Game state
     const [room, setRoom] = useState(1);
@@ -40,6 +46,7 @@ function Play() {
     const [dungeonName, setDungeonName] = useState("");
     const [dungeonBackground, setDungeonBackground] = useState("");
     const [dungeonDifficulties, setDungeonDifficulties] = useState<MgDifficulty[]>([]);
+    const [dungeonPointsPerAnswer, setDungeonPointsPerAnswer] = useState(0);
 
     // Get Dungeon Data
     useEffect(() => {
@@ -50,6 +57,8 @@ function Play() {
                 const dungeon = snapshot.val();
                 setDungeonName(dungeon.name);
                 setDungeonBackground(dungeon.background);
+                setDungeonPointsPerAnswer(dungeon["points-per-answer"]);
+                
                 let difficulties: MgDifficulty[] = dungeon.difficulties.map((value: string) => {
                     // console.log(value);
                     switch (value) {
@@ -93,6 +102,8 @@ function Play() {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
             if (firebaseUser) {
+                setUser(firebaseUser);
+
                 const db = getDatabase();
                 const usernameRef = ref(db, `users/${firebaseUser.uid}`);
                 onValue(usernameRef, (snapshot) => {
@@ -150,12 +161,28 @@ function Play() {
         if (res == userInput) {
             setUserInput("");
             setRoom(room + 1);
+            setPoints(points + dungeonPointsPerAnswer * combo);
+            setCombo(combo + 1);
             const newEq = await generateEquation(getDungeonDifficulty());
             if (!newEq.isEmpty()) setEquation(newEq);
-            // alert("Yaaay!");
+
+            // If we solved everything, store score in DB
+            // (only saved if current > stored)
+            if (room+1 > MAX_ROOMS_IN_DUNGEON && user && dungeonId) {
+                await saveHighScore(user, dungeonId, points);
+            }
+            
         } else {
             setLives(lives - 1);
-            // alert("You stupid");
+            setCombo(1);
+            
+            // If we fucking died, store score in DB
+            // (only saved if current > stored)
+            if (lives-1 < 0 && user && dungeonId) {
+                console.log("arst");
+                
+                await saveHighScore(user, dungeonId, points);
+            }
         }
     }
 
@@ -164,6 +191,7 @@ function Play() {
             <>
                 <h1>Yaaaaay!!!</h1>
                 <p>Pretend that there's a nice background or something</p>
+                <p>Score: {points}</p>
             </>
         );
     }
@@ -189,6 +217,8 @@ function Play() {
                     <h1>{dungeonName}</h1>
                     <p>Room: {room}/{MAX_ROOMS_IN_DUNGEON}</p>
                     <p>Lives: {lives}</p>
+                    <p>Score: {points}</p>
+                    {/* <p>Combo: {combo}</p> */}
                     <form action={validateRes} className="mg-gameplay-form">
                         {/* Equation in gameplay card */}
                         {/* TODO: Implement LaTex rendering. Change styles once LaTex is implemented */}

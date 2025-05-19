@@ -178,6 +178,7 @@
         &::scroll-button(*):disabled{
           filter: invert(1);
           opacity: 0.5;
+          cursor: not-allowed;
         }
         &::scroll-button(*):not(:disabled):is(:hover, :active) {
           filter: drop-shadow(2px 4px 6px black);
