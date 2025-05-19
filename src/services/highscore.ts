@@ -6,11 +6,11 @@ export const saveHighScore = async (user: User, levelUid: string, newHS: number)
     const snapshot = await get(ref(db, `userProgress/${user.uid}/${levelUid}/score`));
     if (!snapshot.exists()) {
         set(ref(db, `userProgress/${user.uid}/${levelUid}/score`), newHS);
-        console.log("a");
+        // console.log("a");
         
     } else if (snapshot.val() < newHS) {
         set(ref(db, `userProgress/${user.uid}/${levelUid}/score`), newHS);
-        console.log("b");
+        // console.log("b");
         
     }
     // else, we do nothing

@@ -156,6 +156,25 @@ function Play() {
         }
     }, []);
 
+    useEffect(()=>{
+        // If we fucking died, store score in DB
+        // (only saved if current > stored)
+        if (lives < 0 && user && dungeonId) {
+            saveHighScore(user, dungeonId, points)
+                .then(()=>{
+                    console.log("saved");
+                });
+        }
+        // If we solved everything, store score in DB
+        // (only saved if current > stored)
+        if (room > MAX_ROOMS_IN_DUNGEON && user && dungeonId) {
+            saveHighScore(user, dungeonId, points)
+                .then(()=>{
+                    console.log("saved");
+                });
+        }
+    });
+
     async function validateRes() {
         const res = solve(equation.getRaw());
         if (res == userInput) {
@@ -165,24 +184,9 @@ function Play() {
             setCombo(combo + 1);
             const newEq = await generateEquation(getDungeonDifficulty());
             if (!newEq.isEmpty()) setEquation(newEq);
-
-            // If we solved everything, store score in DB
-            // (only saved if current > stored)
-            if (room+1 > MAX_ROOMS_IN_DUNGEON && user && dungeonId) {
-                await saveHighScore(user, dungeonId, points);
-            }
-            
         } else {
             setLives(lives - 1);
             setCombo(1);
-            
-            // If we fucking died, store score in DB
-            // (only saved if current > stored)
-            if (lives-1 < 0 && user && dungeonId) {
-                console.log("arst");
-                
-                await saveHighScore(user, dungeonId, points);
-            }
         }
     }
 
