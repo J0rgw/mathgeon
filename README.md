@@ -125,8 +125,15 @@ npm run dev
 ---
 ## TODO
 
+- Responsive mobile layout
+- 
+---
+## DONE BUT NO INFO ON README
+
 - Implement core math gameplay loop
 - Add score multipliers
 - Store high scores in real time
-- Responsive mobile layout
+  
 ---
+
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/J0rgw/mathgeon)
