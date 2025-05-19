@@ -32,9 +32,13 @@ function AdminDungeons() {
         deleteDungeonByUid(uid);
     }
     function create(uid: string, name: string) {
-        setDungeonsUids("");
-        setDungeonsNames("");
-        createDungeon(uid, name);
+        // if the uid is "" you delete the whole table (ask me how I know lol)
+        // and that, kids, is why you validate user input!
+        if (uid.length > 0 && name.length > 0) {
+            setDungeonsUids("");
+            setDungeonsNames("");
+            createDungeon(uid, name);
+        }
     }
     function edit(uid: string, currentName: string) {
         setEditorUid(`dungeons/${uid}/name`);
