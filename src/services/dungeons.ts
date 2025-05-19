@@ -34,5 +34,5 @@ export const deleteDungeonByUid = async (uid: string) => {
 
 export const createDungeon = async (uid: string, name: string) => {
     const db = getDatabase();
-    set(ref(db, `dungeons/${uid}`), {name: name, difficulties: ["MID"], background: "/assets/backgrounds/gameplay2.png"});
+    set(ref(db, `dungeons/${uid}`), {name: name, difficulties: ["MID"], background: "/assets/backgrounds/gameplay2.png", "points-per-answer": 10});
 }
