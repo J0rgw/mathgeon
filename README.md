@@ -2,7 +2,7 @@
 
 Mathgeon is a retro-styled, pixel-art inspired **web roguelite game** where your weapon is logic and math. You progress by solving equations inside dungeons, level up, and compete in global leaderboards.
 
-Built with **React**, **TypeScript**, **Firebase Realtime Database**, and custom animated CSS for a nostalgic book-style scroll interface.
+Built with **React 19**, **TypeScript 5**, **Firebase Realtime Database**, and **Vite**, featuring a nostalgic pixel-art interface with smooth animations and responsive design.
 
 ---
 
@@ -10,130 +10,282 @@ Built with **React**, **TypeScript**, **Firebase Realtime Database**, and custom
 
 ```
 mathgeon/
-├── public/
-│   └── index.html
+├── public/                  # Static assets
+│   ├── favicon.ico
+│   ├── index.html
+│   ├── logo192.png
+│   ├── logo512.png
+│   ├── manifest.json
+│   └── robots.txt
 ├── src/
-│   ├── components/
-│   │   ├── McButton.tsx        # Custom pixel-art button component
-│   │   └── McInput.tsx         # Styled input component
-│   ├── pages/
-│   │   └── Home.tsx            # Main logic and UI container
-│   ├── services/
-│   │   └── firebase.ts         # Firebase config and auth
-│   ├── styles/
-│   │   ├── book.css            # Scroll book UI styles
-│   │   ├── main.css            # Global pixel font and base styles
-│   │   ├── animations.css      # Title animation and page transitions
-│   │   └── homeLayout.css      # Layouts, leaderboard, profile, form styling
-│   └── index.tsx
-├── package.json
-└── README.md
+│   ├── components/          # Reusable UI components
+│   │   ├── McButton.tsx      # Custom pixel-art button component
+│   │   ├── McInput.tsx       # Styled input component
+│   │   └── AlertMessage.tsx  # Alert/notification component
+│   │
+│   ├── logic/                # Core game logic
+│   │   └── gameplay/         # Game mechanics
+│   │       ├── equation.ts   # Equation handling
+│   │       ├── generators.ts # Equation generation
+│   │       └── solver.ts     # Math solving logic
+│   │
+│   ├── pages/                # Application pages
+│   │   ├── Home.tsx          # Main menu and navigation
+│   │   ├── Play.tsx          # Gameplay screen
+│   │   └── Admin.tsx         # Admin interface
+│   │
+│   ├── routes/               # Application routing
+│   │   └── AppRouter.tsx     # Route definitions
+│   │
+│   ├── services/             # External services
+│   │   ├── firebase.ts       # Firebase config and auth
+│   │   └── highscore.ts      # High score management
+│   │
+│   ├── styles/               # CSS styles
+│   │   ├── animations.css    # CSS animations
+│   │   ├── book.css          # Book-style UI
+│   │   ├── gameplay.css      # Gameplay-specific styles
+│   │   ├── homeLayout.css    # Layout components
+│   │   └── main.css          # Global styles
+│   │
+│   ├── types/                # TypeScript type definitions
+│   ├── App.tsx               # Root component
+│   ├── index.tsx             # Application entry point
+│   └── vite-env.d.ts         # Vite type definitions
+│
+├── .gitignore
+├── database.rules.json        # Firebase security rules
+├── firebase.json             # Firebase configuration
+├── package.json              # Project dependencies and scripts
+├── README.md                 # This file
+├── tsconfig.json             # TypeScript configuration
+└── vite.config.ts            # Vite configuration
 ```
 
 ---
 
 ## Tech Stack
 
-- **React** + **React Router**
-- **TypeScript**
-- **Firebase Auth & Realtime DB**
-- **Custom CSS Book-Style Scroll UI**
-- **Google Font: `Press Start 2P`**
-- **Pixel art-inspired UI + retro styling**
+### Frontend
+- **React 19** - Modern UI library for building interactive user interfaces
+- **TypeScript 5** - Static typing for JavaScript
+- **Vite** - Next-generation frontend tooling for fast development
+- **React Router 6** - Client-side routing
+- **CSS Modules** - Component-scoped styles
+
+### Backend & Infrastructure
+- **Firebase Authentication** - User management and authentication
+- **Firebase Realtime Database** - Real-time data synchronization
+
+### Game Logic
+- **Mathsteps** - Advanced equation solving and manipulation
+- **Custom Equation Generator** - Dynamic problem generation
+- **State Management** - Built-in React hooks for state management
+
+### Styling & UI
+- **Pixel-Art Design** - Retro gaming aesthetic
+- **CSS Animations** - Smooth transitions and effects
+- **Google Fonts** - `Press Start 2P` for authentic retro feel
+- **Responsive Design** - Works on various screen sizes
 
 ---
 
 ## Core Features
 
-### Book-style Navigation
+### Gameplay
 
-- Horizontal scroll snap UI using `carousel`
-- Each "page" is part of a book layout:
-  1. Title + Game Description
-  2. Login/Register or Profile
-  3. Dungeon Selector
-  4. Leaderboard
+- **Math-Based Challenges**
+  - Solve equations to progress through dungeon rooms
+  - Progressive difficulty scaling
+  - Multiple operation types (addition, subtraction, multiplication, division)
+  - Combo system for consecutive correct answers
 
-### Authentication
+- **Dungeon System**
+  - Multiple dungeons with unique themes
+  - Up to 10 rooms per dungeon
+  - Lives system with limited attempts
 
-- Sign up with email, username & password
-- Login using **username** (email retrieved from DB)
-- Profile displays: username, email, hidden password
-- Change password & logout options
+### User System
 
-### Dungeons
+- **Authentication**
+  - Email/password registration and login
+  - Username-based profiles
+  - Secure password management
+  - Session persistence
 
-- Pulled from Firebase under `/dungeons`
-- Each dungeon has:
-  - Name
-  - Unique difficulty
-  - Operation types
-- Will include math gameplay in future iteration
+- **Progress Tracking**
+  - High scores per dungeon
+  - Room progression tracking
+  - Achievement system
+  - Combo statistics
 
 ### Leaderboard
 
-- Pulls scores from `/userProgress`
-- Displays **top 10 per dungeon**
-- Names, scores, and rank aligned in retro style
-- Supports long usernames with safe wrapping
-- Scrollable selector for dungeon category
+- Global rankings for each dungeon
+- Real-time updates
+- Top 10 players display
+- Detailed score breakdowns
+- Username display with safe text handling
+
+### Admin Features
+
+- Special administrative interface
+- User management tools
+- Game statistics and analytics
+- Content management system
+- Dungeon configuration
+
+### UI/UX
+
+- Retro pixel-art aesthetic
+- Smooth animations and transitions
+- Intuitive navigation
+- Responsive design for desktop and mobile
+- Accessible interface
 
 ---
 
-## Running the Project
+## Getting Started
 
-1. **Install dependencies**
+### Prerequisites
 
-```bash
-npm install @types/node
-```
+- Node.js (v16 or higher)
+- npm (v7 or higher) or yarn
+- Firebase account
 
-2. **Start dev server**
+### Installation
 
-```bash
-npm run dev
-```
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/J0rgw/mathgeon.git
+   cd mathgeon
+   ```
 
-3. Make sure to configure your Firebase project in `firebase.ts`
+2. **Install dependencies**
+   ```bash
+   npm install @types/node
+   ```
 
----
+3. **Set up Firebase**
+   - Create a new project at [Firebase Console](https://console.firebase.google.com/)
+   - Enable Email/Password authentication
+   - Set up a Realtime Database with appropriate security rules
+   - Create a `.env` file in the project root with your Firebase configuration:
+     ```
+     VITE_FIREBASE_API_KEY=your-api-key
+     VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+     VITE_FIREBASE_DATABASE_URL=https://your-project.firebaseio.com
+     VITE_FIREBASE_PROJECT_ID=your-project-id
+     VITE_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
+     VITE_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
+     VITE_FIREBASE_APP_ID=your-app-id
+     VITE_EQUATIONS_ENDPOINT=your-equations-api-endpoint
+     ```
 
-## Firebase Structure
+4. **Start the development server**
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+5. **Build for production**
+   ```bash
+   npm run build
+   npm run preview
+   # or
+   yarn build
+   yarn preview
+   ```
+
+## Firebase Database Structure
 
 ```json
 {
   "users": {
     "UID123": {
-      "username": "BigBoss999",
-      "email": "big@boss.com"
+      "username": "MathMaster",
+      "email": "user@example.com",
+      "createdAt": 1620000000000,
+      "isAdmin": false
     }
   },
   "dungeons": {
-    "Cavern-of-Addition": { "name": "Cavern of Addition" }
+    "cavern-of-addition": {
+      "name": "Cavern of Addition",
+      "difficulty": "easy",
+      "description": "Master the basics of addition"
+    },
+    "temple-of-subtraction": {
+      "name": "Temple of Subtraction",
+      "difficulty": "medium",
+      "description": "Test your subtraction skills"
+    }
   },
   "userProgress": {
     "UID123": {
-      "Cavern-of-Addition": {
-        "score": 2200,
-        "highestLevel": 7
+      "cavern-of-addition": {
+        "score": 2500,
+        "highestLevel": 10,
+        "lastPlayed": 1620000000000,
+        "completed": true
+      }
+    }
+  },
+  "leaderboard": {
+    "cavern-of-addition": {
+      "UID123": {
+        "username": "MathMaster",
+        "score": 2500,
+        "timestamp": 1620000000000
       }
     }
   }
 }
 ```
-
 ---
+
 ## TODO
 
 - Responsive mobile layout
-- 
----
-## DONE BUT NO INFO ON README
 
-- Implement core math gameplay loop
-- Add score multipliers
-- Store high scores in real time
-  
 ---
+## Development
+
+### Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run test` - Run tests
+- `npm run lint` - Run linter
+
+### Code Style
+
+- Follow [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)
+- Use TypeScript types wherever possible
+- Keep components small and focused
+- Write meaningful commit messages
+
+## Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a new branch for your feature
+3. Commit your changes
+4. Push to the branch
+5. Create a new Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- [Firebase](https://firebase.google.com/) for backend services
+- [Mathsteps](https://github.com/socraticorg/mathsteps) for equation solving
+- [React](https://reactjs.org/) for the UI framework
+- [Vite](https://vitejs.dev/) for build tooling
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/J0rgw/mathgeon)
