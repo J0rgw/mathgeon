@@ -6,12 +6,12 @@
     padding: 1rem;
   }
   
-  .wave-text span {
+  /* .wave-text span {
     font-family: "Grand9KPixel", monospace;
     font-size: 2rem;
     display: inline-block;
     animation: wave 2s ease-in-out infinite;
-  }
+  } */
   
   @keyframes wave {
     0%, 100% {

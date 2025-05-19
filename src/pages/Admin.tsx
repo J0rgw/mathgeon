@@ -4,7 +4,7 @@ import AdminUsers from "../components/admin/AdminUsers";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { getDatabase, onValue, ref } from "firebase/database";
 import { auth } from "../services/firebase";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Admin() {
     const navigate = useNavigate();
@@ -57,6 +57,8 @@ function Admin() {
 
     return (
         <>
+            <Link className="mg-to-title" to="/">Exit Admin Panel</Link>
+
             <h1 className="mg-admin-title">Administration Panel</h1>
             
             <h2 className="mg-admin-title">Users</h2>

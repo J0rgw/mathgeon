@@ -11,6 +11,29 @@ h2.mg-admin-title {
     color: #e4c598;
 }
 
+.mg-to-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 24px;
+
+    font-family: 'Grand9KPixel', monospace;
+    font-size: 14px;
+    color: #2a1b08;
+    background-color: #827373;
+    text-decoration: none;
+    
+    box-shadow:
+        #00000088 -5px -5px 0 inset,
+        #ffffff88 5px 5px 0 inset
+    ;
+
+    &:hover {
+        background-color: #766663;
+        translate: 0 1px;
+    }
+}
+
 .mg-admin-table {
     margin: auto;
     width: calc(100% - 32px);
