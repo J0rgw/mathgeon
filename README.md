@@ -1,8 +1,10 @@
 # Mathgeon
 
-Mathgeon is a retro-styled, pixel-art inspired **web roguelite game** where your weapon is logic and math. You progress by solving equations inside dungeons, level up, and compete in global leaderboards.
+Mathgeon is a retro-styled, pixel-art inspired **web roguelite game** where your weapon is logic and math. You progress by solving equations inside dungeons, and compete in global leaderboards.
 
 Built with **React 19**, **TypeScript 5**, **Firebase Realtime Database**, and **Vite**, featuring a nostalgic pixel-art interface with smooth animations and responsive design.
+
+![Google Chrome](https://img.shields.io/badge/Google%20Chrome-4285F4?style=for-the-badge&logo=GoogleChrome&logoColor=white)[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/J0rgw/mathgeon)![Firebase](https://img.shields.io/badge/firebase-a08021?style=for-the-badge&logo=firebase&logoColor=ffcd34)![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)![Typst](https://img.shields.io/badge/typst-239DAD.svg?style=for-the-badge&logo=typst&logoColor=white)
 
 ---
 
@@ -262,7 +264,6 @@ mathgeon/
 
 ### Code Style
 
-- Follow [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)
 - Use TypeScript types wherever possible
 - Keep components small and focused
 - Write meaningful commit messages
@@ -284,8 +285,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 - [Firebase](https://firebase.google.com/) for backend services
-- [Mathsteps](https://github.com/socraticorg/mathsteps) for equation solving
+- [Grand](https://github.com/A31Nesta/grand) for equation solving
 - [React](https://reactjs.org/) for the UI framework
 - [Vite](https://vitejs.dev/) for build tooling
-
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/J0rgw/mathgeon)
