@@ -12,27 +12,39 @@ export const fetchDungeons = async () => {
 
 export enum DungeonErrorType {
     NO_SNAPSHOT,
-    NO_USER_WITH_UID
+    NO_USER_WITH_UID,
 }
 
 export const deleteDungeonByUid = async (uid: string) => {
     const db = getDatabase();
-    const snapshot = await get(ref(db, "dungeons"));
+    // const dungeonSnapshot = await get(ref(db, "dungeons"));
     
-    if (!snapshot.exists()) {
-        throw DungeonErrorType.NO_SNAPSHOT;
-    }
+    // if (!dungeonSnapshot.exists()) {
+    //     throw DungeonErrorType.NO_SNAPSHOT;
+    // }
     
-    const users = snapshot.val();
+    // const dungeons = dungeonSnapshot.val();
     
-    if (!users[uid]) {
-        throw DungeonErrorType.NO_USER_WITH_UID;
-    }
+    // if (!dungeons[uid]) {
+    //     throw DungeonErrorType.NO_USER_WITH_UID;
+    // }
 
-    set(ref(db, `dungeons/${uid}`), null);
+    // set(ref(db, `dungeons/${uid}`), null);
+
+    // Cascade (delete high scores for this dungeon)
+    const userProgressSnaphot = await get(ref(db, "userProgress"));
+    // If the table doesn't exist (HOW???), return. There's nothing to delete from a non-existent table
+    if (!userProgressSnaphot.exists()) return;
+
+    const userProgress = userProgressSnaphot.val()
+
+    for (const upInstance in userProgress) {
+        if (Object.hasOwn(userProgress[upInstance], uid))
+            console.log("has it");
+    }
 }
 
 export const createDungeon = async (uid: string, name: string) => {
     const db = getDatabase();
-    set(ref(db, `dungeons/${uid}`), {name: name, difficulties: ["MID"], background: "/assets/backgrounds/gameplay2.png", "points-per-answer": 10});
+    set(ref(db, `dungeons/${uid}`), {name: name});
 }
