@@ -17,19 +17,19 @@ export enum DungeonErrorType {
 
 export const deleteDungeonByUid = async (uid: string) => {
     const db = getDatabase();
-    // const dungeonSnapshot = await get(ref(db, "dungeons"));
+    const dungeonSnapshot = await get(ref(db, "dungeons"));
     
-    // if (!dungeonSnapshot.exists()) {
-    //     throw DungeonErrorType.NO_SNAPSHOT;
-    // }
+    if (!dungeonSnapshot.exists()) {
+        throw DungeonErrorType.NO_SNAPSHOT;
+    }
     
-    // const dungeons = dungeonSnapshot.val();
+    const dungeons = dungeonSnapshot.val();
     
-    // if (!dungeons[uid]) {
-    //     throw DungeonErrorType.NO_USER_WITH_UID;
-    // }
+    if (!dungeons[uid]) {
+        throw DungeonErrorType.NO_USER_WITH_UID;
+    }
 
-    // set(ref(db, `dungeons/${uid}`), null);
+    set(ref(db, `dungeons/${uid}`), null);
 
     // Cascade (delete high scores for this dungeon)
     const userProgressSnaphot = await get(ref(db, "userProgress"));
@@ -38,13 +38,16 @@ export const deleteDungeonByUid = async (uid: string) => {
 
     const userProgress = userProgressSnaphot.val()
 
+    // Delete high scores from database
     for (const upInstance in userProgress) {
-        if (Object.hasOwn(userProgress[upInstance], uid))
-            console.log("has it");
+        if (Object.hasOwn(userProgress[upInstance], uid)) {
+            // console.log(`userProgress/${upInstance}/${uid}`);
+            set(ref(db, `userProgress/${upInstance}/${uid}`), null);
+        }
     }
 }
 
 export const createDungeon = async (uid: string, name: string) => {
     const db = getDatabase();
-    set(ref(db, `dungeons/${uid}`), {name: name});
+    set(ref(db, `dungeons/${uid}`), {name: name, difficulties: ["MID"], background: "/assets/backgrounds/gameplay2.png", "points-per-answer": 10});
 }
