@@ -221,3 +221,33 @@ h2.mg-admin-title {
         background-color: #500e0888;
     }
 }
+
+@media (max-width: 1024px) {
+    .mg-to-title {
+        width: 100%;
+        text-align: center;
+    }
+    h1.mg-admin-title {
+        margin-top: 100px;
+    }
+}
+@media (max-width: 625px) {
+    h1.mg-admin-title {
+        font-size: 24px;
+    }
+    h2.mg-admin-title {
+        font-size: 16px;
+    }
+    .mg-admin-table-data {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .mg-admin-table-delete,
+    .mg-admin-table-ban,
+    .mg-admin-table-unban,
+    .mg-admin-table-create {
+        margin: 8px 0;
+        width: 100%;
+    }
+}
