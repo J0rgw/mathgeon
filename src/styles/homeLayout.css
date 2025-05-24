@@ -141,3 +141,131 @@
   color: #9c1010;
   font-size: 14px;
 }
+
+/* Profile Card Styles */
+.profile-card {
+  padding: 1rem;
+  width: 100%;
+  font-family: 'Press Start 2P', monospace;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.profile-button {
+  width: 100%;
+  min-height: 2.5rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.profile-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Ensure the admin link takes full width */
+.admin-link {
+  width: 100%;
+  display: block;
+  text-decoration: none;
+}
+
+.profile-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.profile-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  
+  border: 2px solid #333;
+  padding: 1rem;
+  box-shadow: 0 0 0 2px #000;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+}
+
+.stat-label {
+  font-size: 0.65rem;
+  color: #5a5a5a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: 'Press Start 2P', monospace;
+  text-shadow: 1px 1px 0 #000;
+}
+
+.stat-value {
+  font-size: 0.75rem;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid #333;
+  padding: 0.5rem;
+  font-family: 'Press Start 2P', monospace;
+  text-shadow: 1px 1px 0 #000;
+  box-shadow: inset -1px -1px 0 #3f3f3f, inset 1px 1px 0 #fff;
+  word-break: break-word;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.profile-form input {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.status-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.status-option {
+  padding: 0.5rem;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.status-option:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.status-option.active {
+  background-color: rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+}
+
+.username-display {
+  width: 100%;
+  padding: 0.5rem;
+  background: #000;
+  color: #888;
+  border: 2px solid #000;
+  box-shadow: inset -1px -1px 0 #3f3f3f, inset 1px 1px 0 #fff;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.7rem;
+  pointer-events: none;
+}

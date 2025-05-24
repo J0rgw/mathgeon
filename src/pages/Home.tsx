@@ -67,6 +67,51 @@ export default function MainPage() {
     // ID de la mazmorra seleccionada actualmente
     const [selectedDungeon, setSelectedDungeon] = useState<string>("");
 
+    // Estado para la sección de perfil
+    const [profileAction, setProfileAction] = useState<string>('username');
+    const [newUsername, setNewUsername] = useState<string>('');
+    const [accountStatus, setAccountStatus] = useState<string>('active');
+
+    // Actualizar el nombre de usuario en Firebase
+    const handleUsernameChange = async () => {
+        if (!user || !newUsername.trim()) return;
+        
+        try {
+            const db = getDatabase();
+            await set(ref(db, `users/${user.uid}/username`), newUsername.trim());
+            setUsername(newUsername.trim());
+            setNewUsername('');
+            // Mostrar mensaje de éxito
+            setLoginErrorMsg('Username updated successfully!');
+        } catch (error) {
+            console.error('Error updating username:', error);
+            setLoginErrorMsg('Failed to update username');
+        }
+    };
+
+    // Actualizar el estado de la cuenta
+    const updateAccountStatus = async (status: string) => {
+        if (!user) return;
+        
+        try {
+            const db = getDatabase();
+            if (status === 'deleted') {
+                // Eliminar la cuenta del usuario
+                await deleteUser(user);
+                setUser(null);
+                setLoginErrorMsg('Account deleted successfully');
+            } else {
+                // Actualizar el estado de la cuenta
+                await set(ref(db, `users/${user.uid}/status`), status);
+                setAccountStatus(status);
+                setLoginErrorMsg(`Account status updated to ${status}`);
+            }
+        } catch (error) {
+            console.error('Error updating account status:', error);
+            setLoginErrorMsg('Failed to update account status');
+        }
+    };
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
             setUser(firebaseUser);
@@ -318,37 +363,115 @@ export default function MainPage() {
                                 <div className="page-container">
                                     {user ? (
                                         <>
-                                            {/* PERFIL */}
+                                            {/* PROFILE SECTION */}
                                             <div className="page left-page" data-page="3">
-                                                <div className="profile-info">
-                                                    <h3 className="profile-title">Welcome, {username || "..."}</h3>
-                                                    <p className="profile-text">Email: {user.email}</p>
-                                                    <p className="profile-text">Password: ********</p>
-                                                    {isAdmin &&
-                                                        <Link to={`/admin`}>
-                                                            <McButton onClick={()=>{}}>Administration Panel</McButton>
+                                                <div className="profile-card">
+                                                    <McButton 
+                                                        className="profile-button"
+                                                        onClick={() => setProfileAction('status')}
+                                                    >
+                                                        View Profile
+                                                    </McButton>
+                                                    <McButton 
+                                                        className="profile-button"
+                                                        onClick={() => setProfileAction('username')}
+                                                    >
+                                                        Change Username
+                                                    </McButton>
+                                                    <McButton 
+                                                        className="profile-button"
+                                                        onClick={() => setProfileAction('password')}
+                                                    >
+                                                        Change Password
+                                                    </McButton>
+                                                    {isAdmin && (
+                                                        <Link to="/admin" className="admin-link">
+                                                            <McButton className="profile-button">
+                                                                Admin Panel
+                                                            </McButton>
                                                         </Link>
-                                                    }
+                                                    )}
+                                                    <McButton 
+                                                        className="profile-button sign-out-button"
+                                                        onClick={handleLogout}
+                                                    >
+                                                        Sign Out
+                                                    </McButton>
                                                 </div>
                                             </div>
 
                                             <div className="page right-page" data-page="4">
-                                                <form
-                                                    onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-                                                        e.preventDefault();
-                                                        handlePasswordChange();
-                                                    }}
-                                                    style={{ display: "flex", flexDirection: "column", gap: "1rem", alignItems: "center" }}
-                                                >
-                                                    <McInput
-                                                        placeholder="New Password"
-                                                        value={newPassword}
-                                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewPassword(e.target.value)}
-                                                        type="password"
-                                                    />
-                                                    <McButton type="submit">Change Password</McButton>
-                                                    <McButton onClick={handleLogout}>Log Out</McButton>
-                                                </form>
+                                                <div className="profile-content">
+                                                    {profileAction === 'username' && (
+                                                        <form 
+                                                            className="profile-form"
+                                                            onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+                                                                e.preventDefault();
+                                                                handleUsernameChange();
+                                                            }}
+                                                        >
+                                                            <h3>Change Username</h3>
+                                                            <McInput
+                                                                placeholder="New Username"
+                                                                value={newUsername}
+                                                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewUsername(e.target.value)}
+                                                            />
+                                                            <McButton type="submit">Update Username</McButton>
+                                                        </form>
+                                                    )}
+
+                                                    {profileAction === 'password' && (
+                                                        <form 
+                                                            className="profile-form"
+                                                            onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+                                                                e.preventDefault();
+                                                                handlePasswordChange();
+                                                            }}
+                                                        >
+                                                            <h3>Change Password</h3>
+                                                            <McInput
+                                                                placeholder="New Password"
+                                                                value={newPassword}
+                                                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewPassword(e.target.value)}
+                                                                type="password"
+                                                            />
+                                                            <McButton type="submit">Update Password</McButton>
+                                                        </form>
+                                                    )}
+
+                                                    {profileAction === 'status' && (
+                                                        <div className="profile-stats">
+                                                            <div className="stat-item">
+                                                                <span className="stat-label">Username</span>
+                                                                <div className="stat-value">
+                                                                    {username || "Player"}
+                                                                </div>
+                                                            </div>
+                                                            <div className="stat-item">
+                                                                <span className="stat-label">Email</span>
+                                                                <div className="stat-value">{user.email}</div>
+                                                            </div>
+                                                            <div className="stat-item">
+                                                                <span className="stat-label">Role</span>
+                                                                <div className="stat-value">{isAdmin ? 'Admin' : 'Member'}</div>
+                                                            </div>
+                                                            <div className="status-options">
+                                                                <div 
+                                                                    className={`status-option ${accountStatus === 'active' ? 'active' : ''}`}
+                                                                    onClick={() => updateAccountStatus('active')}
+                                                                >
+                                                                    Active
+                                                                </div>
+                                                                <div 
+                                                                    className={`status-option ${accountStatus === 'deleted' ? 'active' : ''}`}
+                                                                    onClick={() => updateAccountStatus('deleted')}
+                                                                >
+                                                                    Delete Account
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
                                             </div>
                                         </>
                                     ) : (
