@@ -20,7 +20,7 @@
   /* overflow: hidden; */
 
   /* sprite image */
-  --sprite-image: url('assets/sprites/book.webp');
+  --sprite-image: url('/assets/sprites/book.webp');
 
   /* sprite animation settings */
   /* animation duration */
