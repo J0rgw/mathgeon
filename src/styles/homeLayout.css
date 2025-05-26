@@ -61,9 +61,12 @@
   word-wrap: break-word;
   word-break: break-word;
 
-  min-width: 7ch;
-  max-width: 7ch;
-  width: 7ch;
+  /* min-width: 7ch; */
+  /* max-width: 175px; */
+  /* width: 7ch; */
+
+  flex-grow: 1;
+
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -109,14 +112,19 @@
 }
 
 .colon {
+  flex-shrink: 0;
   min-width: 0.5rem;
   text-align: center;
 }
 
 .leaderboard-score {
   font-weight: bold;
-  min-width: 3ch;
+  /* min-width: 3ch; */
   text-align: right;
+  
+  width: 50px;
+  flex-grow: 0;
+  flex-shrink: 0;
 }
 
 .profile-info {

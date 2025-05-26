@@ -1,8 +1,3 @@
-@font-face {
-  font-family: Grand9KPixel;
-  src: url('/assets/fonts/Grand9KPixel.ttf');
-}
-
 :root {
   font-family: 'Grand9KPixel', serif;
   font-optical-sizing: auto;

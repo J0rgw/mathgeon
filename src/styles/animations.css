@@ -1,13 +1,3 @@
-/* Fuente pixel art */
-/* @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap'); */
-@font-face {
-  font-family: 'Press Start 2P';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('/assets/fonts/PressStart2P.woff2') format('woff2');
-}
-
 .wave-text span {
   font-size: 1.75rem;
   display: inline-block;
