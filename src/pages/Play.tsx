@@ -190,23 +190,41 @@ function Play() {
         }
     }
 
-    if (room > MAX_ROOMS_IN_DUNGEON) {
+    // Game end screen component
+    const GameEndScreen = ({ type, score }: { type: 'victory' | 'defeat', score: number }) => {
+        const navigate = useNavigate();
+        const title = type === 'victory' ? 'VICTORY!' : 'DEFEAT!';
+        
         return (
-            <>
-                <h1>Yaaaaay!!!</h1>
-                <p>Pretend that there's a nice background or something</p>
-                <p>Score: {points}</p>
-            </>
+            <div className="game-end-screen">
+                <div className="game-end-content">
+                    <div className="game-end-image-container">
+                        <img 
+                            src="/assets/sprites/winScreen.png"
+                            alt={title}
+                            className="game-end-image"
+                        />
+                    </div>
+                    <h2 className="game-end-title">{title}</h2>
+                    <p className="game-end-score">Score: {score}</p>
+                    <McButton 
+                        onClick={() => navigate('/')}
+                        className="continue-button"
+                    >
+                        Continue
+                    </McButton>
+                </div>
+            </div>
         );
+    };
+
+    // Check for game end conditions
+    if (room > MAX_ROOMS_IN_DUNGEON) {
+        return <GameEndScreen type="victory" score={points} />;
     }
 
     if (lives < 0) {
-        return (
-            <>
-                <h1>You fucking donkey</h1>
-                <p>Mathgeon stole your will to live (same tbh)</p>
-            </>
-        );
+        return <GameEndScreen type="defeat" score={points} />;
     }
 
     return (
@@ -220,7 +238,19 @@ function Play() {
                 <div className="mg-gameplay-panel">
                     <h1>{dungeonName}</h1>
                     <p>Room: {room}/{MAX_ROOMS_IN_DUNGEON}</p>
-                    <p>Lives: {lives}</p>
+                    <div className="lives-container">
+                        <p>Lives:</p>
+                        <div className="hearts-container">
+                            {Array.from({ length: 3 }).map((_, index) => (
+                                <img 
+                                    key={index}
+                                    src="/assets/sprites/lives.png" 
+                                    alt="Life" 
+                                    className={`life ${index < lives ? 'active' : 'inactive'}`}
+                                />
+                            ))}
+                        </div>
+                    </div>
                     <p>Score: {points}</p>
                     {/* <p>Combo: {combo}</p> */}
                     <form action={validateRes} className="mg-gameplay-form">
