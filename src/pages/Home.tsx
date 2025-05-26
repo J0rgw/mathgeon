@@ -12,6 +12,7 @@ import { getDatabase, ref, set, onValue, get } from "firebase/database";
 import { auth } from "../services/firebase";
 import McButton from "../components/McButton";
 import McInput from "../components/McInput";
+import "../styles/fonts.css";
 import "../styles/book.css";
 import "../styles/animations.css";
 import "../styles/main.css";
