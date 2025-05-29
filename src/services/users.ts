@@ -45,6 +45,22 @@ export const deleteUserByUid = async (uid: string) => {
     if (!userStatus.includes("deleted")) userStatus.push("deleted");
     set(ref(db, `users/${uid}/status`), userStatus);
 }
+
+export const permanentlyDeleteAccount = async () => {
+    const user = auth.currentUser;
+    if (!user) return;
+    const uid = user.uid;
+
+    deleteUser(user)
+
+    // deletes user account data. There's no need to check if there was actually data.
+    // since it works by UID you can't accidentally delete anything else and if no data
+    // was there, nothing happens
+    const db = getDatabase();
+    set(ref(db, `users/${uid}`), null);
+    set(ref(db, `userProgress/${uid}`), null);
+}
+
 export const banUserByUid = async (uid: string) => {
     banOrUnbanUserByUid(uid, true)
 }

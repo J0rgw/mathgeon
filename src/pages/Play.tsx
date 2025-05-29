@@ -176,6 +176,10 @@ function Play() {
     });
 
     async function validateRes() {
+        if (userInput.length == 0) {
+            return;
+        }
+
         const res = solve(equation.getRaw());
         if (res == userInput) {
             setUserInput("");
