@@ -21,7 +21,7 @@
     margin: 2rem;
 }
 .mg-gameplay-panel {
-    color: #2a1b08;
+    color: #1c1204;
     background-color: #907a6e;
 
     box-shadow:
@@ -92,11 +92,8 @@
 }
 
 .lives-container > p {
-    font-family: 'Grand9KPixel', sans-serif;
     margin: 0;
     margin-right: 8px;
-    color: #2a1b08;
-    font-size: 1rem;
 }
 
 .hearts-container {
@@ -224,7 +221,7 @@
 
     margin-bottom: 16px;
 
-    >p {
+    >label {
         margin: 0;
         font-size: 16px;
         flex-basis: 50px;

@@ -43,7 +43,7 @@ function Play() {
 
     // Dungeon data
     const { dungeonId } = useParams();
-    const [dungeonName, setDungeonName] = useState("");
+    const [dungeonName, setDungeonName] = useState(dungeonId);
     const [dungeonBackground, setDungeonBackground] = useState("");
     const [dungeonDifficulties, setDungeonDifficulties] = useState<MgDifficulty[]>([]);
     const [dungeonPointsPerAnswer, setDungeonPointsPerAnswer] = useState(0);
@@ -265,8 +265,8 @@ function Play() {
                         </p>
                         {/* Input */}
                         <div className="mg-gameplay-input">
-                            <p>x = </p>
-                            <input type="number" placeholder="..." value={userInput} onChange={(e)=>{setUserInput(e.target.value)}} />
+                            <label htmlFor="solution-input">x = </label>
+                            <input id="solution-input" type="number" placeholder="..." value={userInput} onChange={(e)=>{setUserInput(e.target.value)}} />
                         </div>
                         {/* Submit */}
                         <McButton type="submit">
