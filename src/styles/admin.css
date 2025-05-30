@@ -1,3 +1,7 @@
+:root {
+    --table-bg: #AB9794;
+}
+
 .mg-admin-title {
     font-family: 'Press Start 2P', monospace;
     text-align: center;
@@ -19,8 +23,8 @@ h2.mg-admin-title {
 
     font-family: 'Grand9KPixel', monospace;
     font-size: 14px;
-    color: #2a1b08;
-    background-color: #827373;
+    color: #2A1B08;
+    background-color: var(--table-bg);
     text-decoration: none;
     
     box-shadow:
@@ -42,13 +46,26 @@ h2.mg-admin-title {
 
     font-family: 'Grand9KPixel', monospace;
     font-size: 14px;
-    color: #2a1b08;
-    background-color: #827373;
+    color: #2A1B08;
+    background-color: var(--table-bg);
     
     box-shadow:
         #00000088 -5px -5px 0 inset,
         #ffffff88 5px 5px 0 inset
     ;
+}
+
+.mg-admin-editor-flex {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    >label, input {
+        display: block;
+    }
+    >label {
+        width: 60px;
+    }
 }
 
 .mg-admin-table-data {
@@ -74,8 +91,8 @@ h2.mg-admin-title {
 
     font-family: 'Grand9KPixel', monospace;
     font-size: 14px;
-    color: #2a1b08;
-    background-color: #827373;
+    color: #2A1B08;
+    background-color: var(--table-bg);
 
     box-shadow:
         #00000088 -5px -5px 0 inset,
@@ -111,7 +128,7 @@ h2.mg-admin-title {
 
 .mg-admin-table-delete {
     border-color: red;
-    color: #640000;
+    color: #300000;
 
     box-shadow: red 0 0 16px;
 

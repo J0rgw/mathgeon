@@ -28,10 +28,10 @@ function AdminFieldEditor(props: AdminFieldEditorProps) {
 
     return (
         <dialog className="mg-admin-field-editor" ref={dialog} onClose={props.onClose} onToggle={()=>{setNewValue(props.oldValue ?? "")}}>
-            <h2>Editing <span style={{color: "#e79333"}}>{props.field}</span></h2>
+            <h2>Editing <span style={{color: "#144524"}}>{props.field}</span></h2>
             <div>
-                <label>New Value:</label>
-                <McInput onChange={(e)=>{setNewValue(e.target.value)}} value={newValue} placeholder={props.oldValue ?? ""}></McInput>
+                <label htmlFor="editor-field">New Value:</label>
+                <McInput id="editor-field" onChange={(e)=>{setNewValue(e.target.value)}} value={newValue} placeholder={props.oldValue ?? ""}></McInput>
                 <McButton onClick={persist}>Save</McButton>
             </div>
         </dialog>

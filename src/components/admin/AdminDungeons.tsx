@@ -71,8 +71,14 @@ function AdminDungeons() {
                 {dungeonsElements}
                 <div className="mg-admin-table-data">
                     <div>
-                        <McInput onChange={(e)=>{setDungeonsUids(e.target.value)}} value={dungeonsUids} placeholder="UID"></McInput>
-                        <McInput onChange={(e)=>{setDungeonsNames(e.target.value)}} value={dungeonsNames} placeholder="Name"></McInput>
+                        <div className="mg-admin-editor-flex">
+                            <label htmlFor="new-dungeon-uid">UID:</label>
+                            <McInput id="new-dungeon-uid" onChange={(e)=>{setDungeonsUids(e.target.value)}} value={dungeonsUids} placeholder="UID"></McInput>
+                        </div>
+                        <div className="mg-admin-editor-flex">
+                            <label htmlFor="new-dungeon-name">Name:</label>
+                            <McInput id="new-dungeon-name" onChange={(e)=>{setDungeonsNames(e.target.value)}} value={dungeonsNames} placeholder="Name"></McInput>
+                        </div>
                     </div>
                     <div>
                         <button className="mg-admin-table-create" onClick={() => create(dungeonsUids, dungeonsNames)}>Create!</button>
