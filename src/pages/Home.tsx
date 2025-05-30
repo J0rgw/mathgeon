@@ -20,7 +20,7 @@ import "../styles/homeLayout.css";
 import { Link } from "react-router-dom";
 import { FirebaseError } from "firebase/app";
 import AlertMessage from "../components/AlertMessage";
-import { amIAdmin } from "../services/users";
+import { amIAdmin, permanentlyDeleteAccount } from "../services/users";
 
 // Constants
 const REGEX_EMAIL = /^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/;
@@ -79,6 +79,18 @@ export default function MainPage() {
         
         try {
             const db = getDatabase();
+            const snapshot = await get(ref(db, "users"));
+            const users = snapshot.val();
+
+            // Verificar si el username ya existe
+            const usernameExists = Object.values(users || {}).some(
+                (u: any) => u.username?.toLowerCase() === username.toLowerCase()
+            );
+            if (usernameExists) {
+                setLoginErrorMsg("Username already is use by someone else!");
+                return;
+            }
+
             await set(ref(db, `users/${user.uid}/username`), newUsername.trim());
             setUsername(newUsername.trim());
             setNewUsername('');
@@ -98,7 +110,8 @@ export default function MainPage() {
             const db = getDatabase();
             if (status === 'deleted') {
                 // Eliminar la cuenta del usuario
-                await deleteUser(user);
+                // Esto me ha jodido la vida un poco pero yaaaay
+                await permanentlyDeleteAccount(); // elimina los datos huérfanos. Simplemente borrar la cuenta de firebase auth no hace nada, solo hace que la cuenta sea inaccesible
                 setUser(null);
                 setLoginErrorMsg('Account deleted successfully');
             } else {
@@ -272,7 +285,12 @@ export default function MainPage() {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const uid = userCredential.user.uid;
                 await set(ref(db, `users/${uid}`), { username, email });
-                setLoginErrorMsg("Username already playing mathgeon");
+
+                // Me han dicho los usuarios™ que este mensaje es extremadamente confuso.
+                // La interfaz de cuando tienes cuenta es muy diferente a cuando no la tienes,
+                // mejor quitar este mensaje simplemente, es redundante imho.
+                // Aprovecho para limpiar los mensajes de error si los hubiera.
+                setLoginErrorMsg("");
 
             }
         } catch (error: unknown) {
