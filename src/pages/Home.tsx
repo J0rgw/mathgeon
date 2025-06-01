@@ -84,7 +84,7 @@ export default function MainPage() {
 
             // Verificar si el username ya existe
             const usernameExists = Object.values(users || {}).some(
-                (u: any) => u.username?.toLowerCase() === username.toLowerCase()
+                (u: any) => u.username?.toLowerCase() === newUsername.trim().toLowerCase()
             );
             if (usernameExists) {
                 setLoginErrorMsg("Username already is use by someone else!");
